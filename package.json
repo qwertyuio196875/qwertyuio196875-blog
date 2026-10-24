@@ -9,7 +9,8 @@
     "dev": "astro dev",
     "prebuild": "node scripts/fetch-projects.mjs",
     "build": "astro build",
-    "preview": "astro preview"
+    "preview": "astro preview",
+    "deploy:pages": "wrangler pages deploy dist --project-name=qwertyuio196875-blog --branch=main"
   },
   "dependencies": {
     "astro": "^5.0.0",

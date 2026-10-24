@@ -29,9 +29,30 @@ npm run preview    # 本地预览构建产物
 
 ## 部署
 
-1. 在 Vercel 导入本仓库（或 `npx vercel --prod` 直接部署），根目录的 `vercel.json` 已指定构建命令 `npm run build`。
-2. 部署后把 `astro.config.mjs` 里的 `site` 改成实际域名（RSS 需要绝对地址）。
-3. 有新仓库要展示时，重新部署一次即可刷新项目页。
+主站部署在 Cloudflare Pages，Vercel 作为备份镜像。
+
+### Cloudflare Pages（主站，国内可直连）
+
+本项目采用「直接上传」方式，不走 Git 集成，发布需要手动执行：
+
+```bash
+npm run build
+npx wrangler login      # 仅首次需要
+npm run deploy:pages    # 上传 dist 到 qwertyuio196875-blog.pages.dev
+```
+
+站点地址：https://qwertyuio196875-blog.pages.dev
+
+`astro.config.mjs` 里的 `site` 必须与实际主域名一致（RSS 需要绝对地址）。换域名后改这里并重新发布。
+
+### Vercel（备份镜像）
+
+仓库已关联 Vercel，push 到 `main` 会自动构建部署。注意 `*.vercel.app` 在中国大陆无法直连，仅作备份。
+
+### 其他
+
+- 有新仓库要展示时，重新构建发布一次即可刷新项目页。
+- 若以后启用 Cloudflare Pages 的 Git 集成（安装 Cloudflare GitHub App），推送即可自动发布，可跳过手动上传。
 
 ## 目录结构
 
