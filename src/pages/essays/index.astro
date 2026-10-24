@@ -1,0 +1,98 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getEssays } from '../../lib/content';
+
+const essays = await getEssays(); // 升序（编号来源）
+const reversed = [...essays].reverse(); // 列表按新→旧
+
+// 标签计数
+const tagCounts = new Map<string, number>();
+essays.forEach((e) => e.tags.forEach((t) => tagCounts.set(t, (tagCounts.get(t) ?? 0) + 1)));
+const tags = [...tagCounts.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], 'zh-CN'));
+
+// 按年份分组（新→旧）
+const byYear = new Map<number, typeof reversed>();
+for (const e of reversed) {
+  const year = e.date.getFullYear();
+  if (!byYear.has(year)) byYear.set(year, []);
+  byYear.get(year)!.push(e);
+}
+
+const totalWords = essays.reduce((s, e) => s + e.words, 0);
+---
+
+<Layout title="随笔" description="有标题、日期、标签的长文，按发布顺序编号。">
+  <div class="d-sheetwrap">
+    <article class="ef-sheet">
+      <p class="ef-eyebrow slash">Essays</p>
+      <header class="ef-sheet-head">
+        <h1 class="ef-read">随笔</h1>
+        <p class="ef-field">共 {essays.length} 篇</p>
+      </header>
+      <p class="ef-lede ef-read">长文都编了号，按发布顺序排列。点标签可以筛选。</p>
+
+      <div class="listwrap">
+        <p class="chips">
+          <button class="ef-chip" type="button" data-tag="*" aria-pressed="true">
+            全部 <span class="n">{essays.length}</span>
+          </button>
+          {
+            tags.map(([tag, n]) => (
+              <button class="ef-chip" type="button" data-tag={tag} aria-pressed="false">
+                {tag} <span class="n">{n}</span>
+              </button>
+            ))
+          }
+        </p>
+
+        {
+          [...byYear.entries()].map(([year, items]) => (
+            <h2 class="ef-group-head ef-read">
+              <span>{year}</span>
+              <span class="ef-field">{items.length} 篇</span>
+            </h2>
+          ))
+        }
+
+        <ol class="ef-records">
+          {
+            reversed.map((e) => (
+              <li data-tags={e.tags.join(' ')}>
+                <a class="ef-record" href={`/essays/${e.id}/`}>
+                  <span class="ef-tag">{e.no}</span>
+                  <time class="ef-field" datetime={e.date.toISOString().slice(0, 10)}>{e.dateStr}</time>
+                  <span class="name ef-read">{e.title}</span>
+                  <span class="ef-field">{e.words.toLocaleString('zh-CN')} 字</span>
+                </a>
+              </li>
+            ))
+          }
+        </ol>
+
+        <ul class="ef-ledger">
+          <li><span>字数合计</span><span class="ef-field">{totalWords.toLocaleString('zh-CN')} 字</span></li>
+        </ul>
+      </div>
+    </article>
+  </div>
+</Layout>
+
+<script>
+  // 标签筛选：点 chip 过滤记录行（结构与原型一致，无外部依赖）
+  const chips = document.querySelectorAll<HTMLButtonElement>('.chips .ef-chip');
+
+  chips.forEach((chip) => {
+    chip.addEventListener('click', () => {
+      const tag = chip.dataset.tag ?? '*';
+      chips.forEach((c) => {
+        const on = c === chip;
+        c.setAttribute('aria-pressed', String(on));
+        c.classList.toggle('is-active', on);
+      });
+      document.querySelectorAll<HTMLElement>('[data-tags]').forEach((row) => {
+        const rowTags = (row.dataset.tags ?? '').split(/\s+/).filter(Boolean);
+        row.hidden = tag !== '*' && !rowTags.includes(tag);
+      });
+    });
+  });
+</script>

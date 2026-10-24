@@ -1,0 +1,81 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getEssays, plainText } from '../../lib/content';
+import { render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const essays = await getEssays();
+  return essays.map((e) => ({ params: { slug: e.id }, props: { essay: e } }));
+}
+
+const { essay } = Astro.props;
+const { Content } = await render(essay.entry);
+
+// 相关随笔：有共同标签，取最新的两篇
+const all = await getEssays();
+const related = all
+  .filter((e) => e.id !== essay.id && e.tags.some((t) => essay.tags.includes(t)))
+  .reverse()
+  .slice(0, 2);
+
+const excerpt = plainText(essay.entry.body).slice(0, 80);
+---
+
+<Layout title={essay.title} description={excerpt}>
+  <div class="d-sheetwrap">
+    <article class="ef-sheet">
+      <p class="ef-crumb ef-field">
+        <a href="/essays/">全部随笔</a>
+        {essay.tags.length > 0 && <span>{essay.tags[0]}</span>}
+      </p>
+
+      <p style="display: flex; gap: 0.5rem; margin: 0 0 0.75rem; flex-wrap: wrap">
+        <span class="ef-tag is-current">{essay.no}</span>
+        {
+          essay.tags.map((t) => (
+            <span class="ef-kv"><span>标签</span><span>{t}</span></span>
+          ))
+        }
+      </p>
+
+      <ul class="ef-facts ef-field">
+        <li><time datetime={essay.date.toISOString().slice(0, 10)}>{essay.dateStr}</time></li>
+        <li>{essay.words.toLocaleString('zh-CN')} 字</li>
+        <li>约 {essay.minutes} 分钟</li>
+      </ul>
+
+      <h1 class="essay-title">{essay.title}</h1>
+      <div class="ef-tri" aria-hidden="true"><i></i><i></i><i></i></div>
+      <p class="ef-lede ef-read">{excerpt}…</p>
+
+      <div class="ef-prose">
+        <Content />
+      </div>
+
+      {
+        related.length > 0 && (
+          <>
+            <h2 class="ef-group-head ef-read" style="margin-top: 2.5rem">
+              <span>相关随笔</span>
+              <span class="ef-field">{related.length} 篇</span>
+            </h2>
+            <ol class="ef-records">
+              {
+                related.map((r) => (
+                  <li>
+                    <a class="ef-record" href={`/essays/${r.id}/`}>
+                      <span class="ef-tag">{r.no}</span>
+                      <time class="ef-field" datetime={r.date.toISOString().slice(0, 10)}>{r.dateStr}</time>
+                      <span class="name ef-read">{r.title}</span>
+                      <span class="ef-field">{r.words.toLocaleString('zh-CN')} 字</span>
+                    </a>
+                  </li>
+                ))
+              }
+            </ol>
+          </>
+        )
+      }
+    </article>
+  </div>
+</Layout>

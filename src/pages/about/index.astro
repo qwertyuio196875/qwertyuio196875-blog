@@ -1,0 +1,38 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection, render } from 'astro:content';
+import { getEssays, getMoments } from '../../lib/content';
+import { SITE } from '../../consts';
+
+const about = (await getCollection('about'))[0];
+const { Content } = await render(about);
+const essays = await getEssays();
+const moments = await getMoments();
+---
+
+<Layout title="关于" description="关于 qwertyuio196875：Java 后端 + AI 工具方向。">
+  <div class="d-sheetwrap">
+    <article class="ef-sheet">
+      <p class="ef-eyebrow slash">About</p>
+      <header class="ef-sheet-head">
+        <h1 class="ef-read">关于</h1>
+        <p class="ef-field">{SITE.name}</p>
+      </header>
+
+      <div class="ef-prose">
+        <Content />
+      </div>
+
+      <ul class="ef-ledger">
+        <li><span>技术栈</span><span class="ef-field">Java / Spring Boot / Vue</span></li>
+        <li><span>在学</span><span class="ef-field">Python / Spring AI</span></li>
+        <li><span>随笔 / 说说</span><span class="ef-field">{essays.length} 篇 / {moments.length} 条</span></li>
+      </ul>
+
+      <p class="ef-actions">
+        <a class="ef-btn go" href={SITE.github} target="_blank" rel="noopener">GitHub 主页</a>
+        <a class="ef-btn small" href="/rss.xml">订阅 RSS</a>
+      </p>
+    </article>
+  </div>
+</Layout>

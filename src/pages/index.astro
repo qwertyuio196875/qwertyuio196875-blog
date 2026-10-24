@@ -1,0 +1,92 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { SITE, HOME_INTRO } from '../consts';
+import { getEssays, getMoments, plainText, formatDate } from '../lib/content';
+import projectsData from '../generated/projects.json';
+
+const essays = await getEssays(); // 升序
+const latestEssays = [...essays].reverse().slice(0, 5);
+const moments = await getMoments(); // 倒序
+const latestMoments = moments.slice(0, 3);
+const repos = projectsData.repos ?? [];
+
+const today = formatDate(new Date());
+---
+
+<Layout>
+  <article class="d-home">
+    <p class="ef-eyebrow slash">Home</p>
+    <h1 class="site-name">{SITE.name}</h1>
+    <ul class="ef-facts ef-field">
+      <li><time>{today}</time></li>
+      <li>随笔 {essays.length} 篇</li>
+      <li>说说 {moments.length} 条</li>
+      <li>项目 {repos.length} 个</li>
+    </ul>
+
+    <section class="d-sec">
+      <h2 class="ef-group-head ef-read"><span>前言</span></h2>
+      {HOME_INTRO.map((p) => <p class="ef-read">{p}</p>)}
+    </section>
+
+    <section class="d-sec">
+      <h2 class="ef-group-head ef-read"><span>随笔</span><span class="ef-field">{essays.length} 篇</span></h2>
+      <ol class="ef-records">
+        {
+          latestEssays.map((e) => (
+            <li>
+              <a class="ef-record" href={`/essays/${e.id}/`}>
+                <span class="ef-tag">{e.no}</span>
+                <time class="ef-field" datetime={e.date.toISOString().slice(0, 10)}>{e.dateStr}</time>
+                <span class="name ef-read">{e.title}</span>
+                <span class="ef-field">{e.words.toLocaleString('zh-CN')} 字</span>
+              </a>
+            </li>
+          ))
+        }
+      </ol>
+      <p class="ef-actions">
+        <a class="ef-btn small" href="/essays/">查看全部 {essays.length} 篇</a>
+      </p>
+    </section>
+
+    <section class="d-sec">
+      <h2 class="ef-group-head ef-read"><span>说说</span><span class="ef-field">{moments.length} 条</span></h2>
+      {
+        latestMoments.map((m) => (
+          <div class="mo">
+            <time class="ef-field" datetime={m.date.toISOString().slice(0, 10)}>{m.dateStr}</time>
+            <div>
+              <p class="ef-read">{plainText(m.entry.body)}</p>
+              {m.image && <img src={m.image} alt="" loading="lazy" />}
+            </div>
+          </div>
+        ))
+      }
+      <p class="ef-actions">
+        <a class="ef-btn small" href="/moments/">查看全部 {moments.length} 条</a>
+      </p>
+    </section>
+
+    <section class="d-sec">
+      <h2 class="ef-group-head ef-read"><span>项目</span><span class="ef-field">{repos.length} 个</span></h2>
+      {
+        repos.map((r) => (
+          <div class="d-prj">
+            <p class="t">
+              <a href={r.url} target="_blank" rel="noopener">{r.name}</a>
+            </p>
+            {r.description && <p class="d ef-read">{r.description}</p>}
+            <p class="meta ef-field">
+              {r.language && <span>{r.language}</span>}
+              <span>{r.stars} 星</span>
+            </p>
+          </div>
+        ))
+      }
+      <p class="ef-actions">
+        <a class="ef-btn small" href="/projects/">查看全部 {repos.length} 个</a>
+      </p>
+    </section>
+  </article>
+</Layout>

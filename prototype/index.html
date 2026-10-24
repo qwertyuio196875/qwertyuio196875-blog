@@ -1,0 +1,1254 @@
+<!doctype html>
+<!--
+  博客 UI 原型（一次性，勿发布）
+  计划：博客整站的三个结构变体，通过 ?variant=A|B|C 切换，悬浮底栏循环。
+  A 顶部导航 · 档案馆    B 左侧栏 · 运行日志    C 极简 · 大开本杂志
+  每个变体含：首页 / 随笔 / 随笔详情 / 说说 / 项目 / 友链 / 关于。
+  标注「示例」的内容为占位；项目卡片数据来自 qwertyuio196875 的真实公开仓库快照（2026.10.24）。
+  需静态服务器打开（ES 模块不允许 file://）：
+    cd E:\github\blog\prototype && python -m http.server 8123
+    http://localhost:8123/?variant=A
+-->
+<html lang="zh-CN" data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>博客原型 · qwertyuio196875</title>
+    <script>
+      try {
+        const t = localStorage.getItem('theme');
+        document.documentElement.dataset.theme = t || 'light';
+      } catch (e) {}
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Saira:wdth,wght@50..125,100..900&family=Noto+Sans+SC:wght@400..900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./assets/endfield.css" />
+    <link rel="stylesheet" href="./prototype.css" />
+  </head>
+  <body class="ef ef-contours">
+    <div class="ef-tri" aria-hidden="true"><i></i><i></i><i></i></div>
+
+    <!-- ================================================================
+         变体 A · 顶部导航 · 档案馆
+         ================================================================ -->
+    <div class="vpane" data-vpane="A" data-page="home">
+      <header class="a-top">
+        <a class="brand" href="#" data-nav="home"><span class="seal">Q</span>QWERTYUIO196875</a>
+        <nav aria-label="主导航">
+          <a href="#" data-nav="home"><small class="ef-eyebrow">Home</small><span>首页</span></a>
+          <a href="#" data-nav="essays"><small class="ef-eyebrow">Essays</small><span>随笔</span></a>
+          <a href="#" data-nav="moments"><small class="ef-eyebrow">Moments</small><span>说说</span></a>
+          <a href="#" data-nav="projects"><small class="ef-eyebrow">Projects</small><span>项目</span></a>
+          <a href="#" data-nav="links"><small class="ef-eyebrow">Links</small><span>友链</span></a>
+          <a href="#" data-nav="about"><small class="ef-eyebrow">About</small><span>关于</span></a>
+        </nav>
+        <div class="util">
+          <button class="ef-btn small" type="button" data-theme-toggle>切换深浅</button>
+        </div>
+      </header>
+
+      <!-- A 首页 -->
+      <section class="pg" data-pg="home">
+        <div class="a-hero" data-hero>
+          <p class="meta ef-field">
+            <time>2026.10.24</time>
+            <span>随笔 <b data-fx-load>6</b> 篇</span>
+            <span>说说 <b data-fx-load>5</b> 条</span>
+            <span>项目 <b data-fx-load>3</b> 个</span>
+            <span><b data-fx-load>23,026</b> 字</span>
+          </p>
+          <h1 class="ef-wordmark">
+            <span class="solid ef-in-drive">QWERTYUIO</span>
+            <span class="hollow ef-in-drive" style="animation-delay: 140ms" aria-hidden="true">196875</span>
+          </h1>
+          <div class="copy">
+            <p class="claim"><span class="ef-marker ef-in-stroke">把学过的东西写下来，免得忘掉。</span></p>
+            <p class="bio">示例简介：qwertyuio196875 的个人博客。Java 后端出身，正在把 AI 工具链接进日常开发；随笔写长文，说说记日常。</p>
+            <p class="ef-actions">
+              <a class="ef-btn go" href="#" data-nav="essay">读最新一篇 <span class="sub">No.006</span></a>
+              <a class="ef-btn" href="#" data-nav="essays">全部随笔</a>
+              <a class="ef-btn" href="#" data-nav="about">关于我</a>
+            </p>
+          </div>
+          <figure class="ef-frame">
+            <div class="window">
+              <svg viewBox="0 0 400 420" fill="none" stroke="currentColor" stroke-width="1.5" aria-label="示例主视觉：终端窗口线稿">
+                <rect x="46" y="66" width="308" height="284" />
+                <line x1="46" y1="106" x2="354" y2="106" />
+                <rect x="60" y="82" width="9" height="9" /><rect x="77" y="82" width="9" height="9" /><rect x="94" y="82" width="9" height="9" />
+                <g font-family="Saira, sans-serif" font-size="13" letter-spacing="1" fill="currentColor" stroke="none">
+                  <text x="62" y="142">qwertyuio196875@blog:~$</text>
+                  <text x="62" y="170">astro build</text>
+                  <text x="62" y="206" opacity=".55">[info] build complete</text>
+                  <text x="62" y="230" opacity=".55">42 pages / 1.2s</text>
+                  <text x="62" y="278">// NEXT</text>
+                  <text x="62" y="302">写 No.007</text>
+                </g>
+                <rect x="62" y="318" width="11" height="17" fill="currentColor" stroke="none" />
+                <text x="46" y="396" font-family="Saira, sans-serif" font-stretch="125%" font-size="11" letter-spacing="2" fill="currentColor" stroke="none">LOG / 001</text>
+              </svg>
+            </div>
+            <figcaption class="ef-plate">示例主视觉：终端线稿，上线前换成自己的图。</figcaption>
+          </figure>
+          <div class="ef-ticker" aria-label="最近的随笔">
+            <div class="track">
+              <ul>
+                <li><a href="#" data-nav="essay"><b>No.006</b>给 Java 开发者的 Python 速通路线</a></li>
+                <li><a href="#" data-nav="essays"><b>No.005</b>用 Spring AI 自动分类工单</a></li>
+                <li><a href="#" data-nav="essays"><b>No.004</b>AI-Think-Forge 设计记</a></li>
+                <li><a href="#" data-nav="essays"><b>No.003</b>Git 教学仓库整理术</a></li>
+                <li><a href="#" data-nav="essays"><b>No.002</b>智慧养老项目里的 Redis 缓存优化</a></li>
+                <li><a href="#" data-nav="essays"><b>No.001</b>为什么又开始写博客</a></li>
+              </ul>
+              <ul aria-hidden="true">
+                <li><a href="#" tabindex="-1"><b>No.006</b>给 Java 开发者的 Python 速通路线</a></li>
+                <li><a href="#" tabindex="-1"><b>No.005</b>用 Spring AI 自动分类工单</a></li>
+                <li><a href="#" tabindex="-1"><b>No.004</b>AI-Think-Forge 设计记</a></li>
+                <li><a href="#" tabindex="-1"><b>No.003</b>Git 教学仓库整理术</a></li>
+                <li><a href="#" tabindex="-1"><b>No.002</b>智慧养老项目里的 Redis 缓存优化</a></li>
+                <li><a href="#" tabindex="-1"><b>No.001</b>为什么又开始写博客</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <section class="a-latest">
+          <a href="#" data-nav="essay" data-fx-host>
+            <span class="ef-hollow-no" aria-hidden="true" data-fx>006</span>
+            <span class="body">
+              <span class="ef-field"><span class="flag">最新</span> 2026.10.21 | 3,214 字 | 约 8 分钟 | Python</span>
+              <span class="title">给 Java 开发者的 Python 速通路线</span>
+              <span class="ef-read" style="color: var(--ef-ink-2); line-height: 1.8">示例摘要：把 python-speedrun 仓库的路线写成一篇随笔——从 Java 的肌肉记忆切换到 Python 的直觉，哪些坑要绕开，哪些直觉可以直接复用。</span>
+              <span class="ef-btn go">阅读全文</span>
+            </span>
+          </a>
+        </section>
+
+        <section class="a-duo">
+          <div>
+            <h2 class="ef-pair"><span class="ef-eyebrow">Essays</span><span>最近随笔</span></h2>
+            <ol class="ef-records">
+              <li><a class="ef-record" href="#" data-nav="essay"><span class="ef-tag is-current">No.006</span><time class="ef-field">2026.10.21</time><span class="name ef-read">给 Java 开发者的 Python 速通路线</span><span class="ef-field">3,214 字</span></a></li>
+              <li><a class="ef-record" href="#" data-nav="essays"><span class="ef-tag">No.005</span><time class="ef-field">2026.10.09</time><span class="name ef-read">用 Spring AI 自动分类工单</span><span class="ef-field">5,802 字</span></a></li>
+              <li><a class="ef-record" href="#" data-nav="essays"><span class="ef-tag">No.004</span><time class="ef-field">2026.09.18</time><span class="name ef-read">AI-Think-Forge 设计记</span><span class="ef-field">4,377 字</span></a></li>
+            </ol>
+            <p class="ef-actions"><a class="ef-btn small" href="#" data-nav="essays">查看全部 6 篇</a></p>
+          </div>
+          <div>
+            <h2 class="ef-pair"><span class="ef-eyebrow">Moments</span><span>最近说说</span></h2>
+            <div class="mo">
+              <time class="ef-field" datetime="2026-10-23">2026.10.23 21:40</time>
+              <p class="ef-read">今晚把博客原型撸出来了，三套方案自己先挑花眼。</p>
+            </div>
+            <div class="mo">
+              <time class="ef-field" datetime="2026-10-20">2026.10.20 12:12</time>
+              <p class="ef-read">Spring AI 的 ChatClient 写起来比想象中顺手，就是 token 花得心疼。</p>
+            </div>
+            <div class="mo">
+              <time class="ef-field" datetime="2026-10-15">2026.10.15 23:05</time>
+              <p class="ef-read">python-speedrun 的 clone 数破 100 了，写条说说纪念。</p>
+            </div>
+            <p class="ef-actions"><a class="ef-btn small" href="#" data-nav="moments">查看全部 5 条</a></p>
+          </div>
+        </section>
+      </section>
+
+      <!-- A 随笔列表 -->
+      <section class="pg a-sheetwrap" data-pg="essays" hidden>
+        <article class="ef-spread">
+          <div class="ef-sheet">
+            <p class="ef-eyebrow slash">Essays</p>
+            <header class="ef-sheet-head"><h1 class="ef-read">随笔</h1><p class="ef-field">共 6 篇</p></header>
+            <p class="ef-lede ef-read">长文都编了号，按发布顺序排列。点标签可以筛选。</p>
+            <div class="listwrap">
+              <p class="chips">
+                <button class="ef-chip" type="button" data-tag="*" aria-pressed="true">全部 <span class="n">6</span></button>
+                <button class="ef-chip" type="button" data-tag="java" aria-pressed="false">Java <span class="n">2</span></button>
+                <button class="ef-chip" type="button" data-tag="ai" aria-pressed="false">AI <span class="n">2</span></button>
+                <button class="ef-chip" type="button" data-tag="python" aria-pressed="false">Python <span class="n">1</span></button>
+                <button class="ef-chip" type="button" data-tag="git" aria-pressed="false">Git <span class="n">1</span></button>
+                <button class="ef-chip" type="button" data-tag="redis" aria-pressed="false">Redis <span class="n">1</span></button>
+                <button class="ef-chip" type="button" data-tag="tools" aria-pressed="false">工具 <span class="n">1</span></button>
+                <button class="ef-chip" type="button" data-tag="note" aria-pressed="false">随笔 <span class="n">1</span></button>
+              </p>
+              <h2 class="ef-group-head ef-read"><span>2026</span><span class="ef-field">6 篇</span></h2>
+              <ol class="ef-records">
+                <li><a class="ef-record" href="#" data-nav="essay" data-tags="python"><span class="ef-tag">No.006</span><time class="ef-field">2026.10.21</time><span class="name ef-read">给 Java 开发者的 Python 速通路线</span><span class="ef-field">3,214 字</span></a></li>
+                <li><a class="ef-record" href="#" data-nav="essay" data-tags="java ai"><span class="ef-tag">No.005</span><time class="ef-field">2026.10.09</time><span class="name ef-read">用 Spring AI 自动分类工单</span><span class="ef-field">5,802 字</span></a></li>
+                <li><a class="ef-record" href="#" data-nav="essay" data-tags="ai tools"><span class="ef-tag">No.004</span><time class="ef-field">2026.09.18</time><span class="name ef-read">AI-Think-Forge 设计记</span><span class="ef-field">4,377 字</span></a></li>
+                <li><a class="ef-record" href="#" data-nav="essay" data-tags="git"><span class="ef-tag">No.003</span><time class="ef-field">2026.08.30</time><span class="name ef-read">Git 教学仓库整理术</span><span class="ef-field">2,045 字</span></a></li>
+                <li><a class="ef-record" href="#" data-nav="essay" data-tags="java redis"><span class="ef-tag">No.002</span><time class="ef-field">2026.08.12</time><span class="name ef-read">智慧养老项目里的 Redis 缓存优化</span><span class="ef-field">6,380 字</span></a></li>
+                <li><a class="ef-record" href="#" data-nav="essay" data-tags="note"><span class="ef-tag">No.001</span><time class="ef-field">2026.07.25</time><span class="name ef-read">为什么又开始写博客</span><span class="ef-field">1,208 字</span></a></li>
+              </ol>
+            </div>
+          </div>
+          <aside class="ef-margin" aria-label="统计">
+            <h2 class="ef-field" style="margin: 0 0 0.6rem">按标签</h2>
+            <ul class="ef-ledger">
+              <li><a href="#" data-nav="essays">Java</a><span class="ef-field">2 篇</span></li>
+              <li><a href="#" data-nav="essays">AI</a><span class="ef-field">2 篇</span></li>
+              <li><span>Python / Git / Redis</span><span class="ef-field">各 1 篇</span></li>
+              <li><span>字数合计</span><span class="ef-field">23,026 字</span></li>
+            </ul>
+          </aside>
+        </article>
+      </section>
+
+      <!-- A 随笔详情 -->
+      <section class="pg a-sheetwrap" data-pg="essay" hidden>
+        <article class="ef-spread">
+          <div class="ef-sheet">
+            <p class="ef-crumb ef-field"><a href="#" data-nav="essays">全部随笔</a><span>Python</span></p>
+            <p class="ids" style="display: flex; gap: 0.5rem; margin: 0 0 0.75rem">
+              <a class="ef-tag is-current" href="#" data-nav="essay">No.006</a>
+              <a class="ef-kv" href="#" data-nav="essays"><span>标签</span><span>Python</span></a>
+            </p>
+            <ul class="ef-facts ef-field">
+              <li><time>2026.10.21</time></li>
+              <li>3,214 字</li>
+              <li>约 8 分钟</li>
+            </ul>
+            <h1 class="ef-read" style="font-size: clamp(1.9rem, 4vw, 2.75rem); font-weight: 700; line-height: 1.25; margin: 1.5rem 0 1rem">给 Java 开发者的 Python 速通路线</h1>
+            <div class="ef-tri" aria-hidden="true"><i></i><i></i><i></i></div>
+            <p class="ef-lede ef-read">示例摘要：从 Java 的肌肉记忆切换到 Python 的直觉——哪些坑要绕开，哪些直觉可以直接复用。</p>
+            <div class="ef-prose">
+              <p>示例正文（占位）。阅读区只用墨色、次要墨色和纸面，不出现黄色大块。一行大约三十八个汉字，行高 1.85。<a href="#" data-nav="essays">链接是墨色字压在一条黄色笔划上</a>，深色主题里换成一条黄色细线。</p>
+              <h2>一、先扔掉的想法</h2>
+              <p>从 Java 过来的人，第一周最容易做的事就是到处找 getter 和 setter。示例段落，正式内容上线时替换。</p>
+              <p>行内代码 <code>dataclass Slot:</code> 用等宽字体，这是唯一用等宽的地方。</p>
+              <h2>二、可以直接复用的直觉</h2>
+              <blockquote>示例引用：接口小、行为少，在哪门语言里都是好味道。</blockquote>
+              <p>示例段落：生成器不是迭代器，但 for 循环不在乎这件事。</p>
+            </div>
+            <h2 class="ef-group-head ef-read"><span>相关随笔</span><span class="ef-field">2 篇</span></h2>
+            <ol class="ef-records">
+              <li><a class="ef-record" href="#" data-nav="essays"><span class="ef-tag">No.005</span><time class="ef-field">2026.10.09</time><span class="name ef-read">用 Spring AI 自动分类工单</span><span class="ef-field">5,802 字</span></a></li>
+              <li><a class="ef-record" href="#" data-nav="essays"><span class="ef-tag">No.004</span><time class="ef-field">2026.09.18</time><span class="name ef-read">AI-Think-Forge 设计记</span><span class="ef-field">4,377 字</span></a></li>
+            </ol>
+          </div>
+          <aside class="ef-margin" aria-label="目录">
+            <h2 class="ef-field" style="margin: 0 0 0.6rem">目录</h2>
+            <ol style="margin: 0; padding: 0; list-style: none; border-left: 1px solid var(--ef-rule)">
+              <li><a href="#" style="display: block; padding: 0.28rem 0 0.28rem 0.9rem; border-left: 3px solid transparent; margin-left: -1px; color: var(--ef-ink); font-size: 0.875rem; text-decoration: none">一、先扔掉的想法</a></li>
+              <li><a href="#" style="display: block; padding: 0.28rem 0 0.28rem 0.9rem; border-left: 3px solid transparent; margin-left: -1px; color: var(--ef-ink-2); font-size: 0.875rem; text-decoration: none">二、可以直接复用的直觉</a></li>
+            </ol>
+          </aside>
+        </article>
+      </section>
+
+      <!-- A 说说 -->
+      <section class="pg a-sheetwrap" data-pg="moments" hidden>
+        <article class="ef-spread">
+          <div class="ef-sheet">
+            <p class="ef-eyebrow slash">Moments</p>
+            <header class="ef-sheet-head"><h1 class="ef-read">说说</h1><p class="ef-field">共 5 条</p></header>
+            <p class="ef-lede ef-read">无标题的短动态，按时间倒序，偶尔配图。</p>
+            <div class="mo">
+              <time class="ef-field" datetime="2026-10-23">2026.10.23 21:40</time>
+              <div>
+                <p class="ef-read">今晚把博客原型撸出来了，三套方案自己先挑花眼。</p>
+              </div>
+            </div>
+            <div class="mo">
+              <time class="ef-field" datetime="2026-10-20">2026.10.20 12:12</time>
+              <div>
+                <p class="ef-read">Spring AI 的 ChatClient 写起来比想象中顺手，就是 token 花得心疼。</p>
+              </div>
+            </div>
+            <div class="mo">
+              <time class="ef-field" datetime="2026-10-15">2026.10.15 23:05</time>
+              <div>
+                <p class="ef-read">python-speedrun 的 clone 数破 100 了，写条说说纪念。</p>
+                <figure class="ef-frame mo-img" style="height: 9.5rem">
+                  <div class="window">
+                    <svg viewBox="0 0 220 130" fill="none" stroke="currentColor" stroke-width="1" aria-label="示例图片占位">
+                      <rect x="1" y="1" width="218" height="128" />
+                      <g opacity=".3"><line x1="20" y1="128" x2="148" y2="0" /><line x1="60" y1="128" x2="188" y2="0" /><line x1="100" y1="128" x2="218" y2="10" /><line x1="140" y1="128" x2="218" y2="50" /></g>
+                      <text x="110" y="70" text-anchor="middle" font-size="12" letter-spacing="3" fill="currentColor" stroke="none" font-family="Saira, sans-serif">示例图片</text>
+                    </svg>
+                  </div>
+                </figure>
+              </div>
+            </div>
+            <div class="mo">
+              <time class="ef-field" datetime="2026-10-08">2026.10.08 09:30</time>
+              <div><p class="ef-read">雨天的周末，适合整理 Git 教学仓库。</p></div>
+            </div>
+            <div class="mo">
+              <time class="ef-field" datetime="2026-09-28">2026.09.28 22:17</time>
+              <div><p class="ef-read">AI-Ticket-Management 跑通了第一条自动分类的端到端流程。</p></div>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <!-- A 项目 -->
+      <section class="pg a-sheetwrap" data-pg="projects" hidden>
+        <article class="ef-spread">
+          <div class="ef-sheet">
+            <p class="ef-eyebrow slash">Projects</p>
+            <header class="ef-sheet-head"><h1 class="ef-read">项目</h1><p class="ef-field">共 3 个</p></header>
+            <p class="ef-lede ef-read">构建时自动从 GitHub 拉取的公开仓库（示例快照 2026.10.24）；排除清单已排除 fork、私有仓库和 1 个无关仓库。</p>
+            <div class="prj">
+              <div>
+                <p class="t">AI-Ticket-Management</p>
+                <p class="d ef-read">基于 Spring Boot 3 + Spring AI + Vue 3 构建的 AI 智能工单管理系统，DeepSeek 自动分类。</p>
+                <p class="meta ef-field"><span class="lang">Java</span><span>1 星</span><span>2026 年更新</span></p>
+              </div>
+              <p class="ef-actions" style="margin: 0; align-self: center"><a class="ef-btn small" href="https://github.com/qwertyuio196875/AI-Ticket-Management" target="_blank" rel="noopener">在 GitHub 查看</a></p>
+            </div>
+            <div class="prj">
+              <div>
+                <p class="t">AI-Think-Forge</p>
+                <p class="d ef-read">把一句模糊的想法，打磨成一份可交付的成品。</p>
+                <p class="meta ef-field"><span class="lang">Python</span><span>0 星</span><span>2026 年更新</span></p>
+              </div>
+              <p class="ef-actions" style="margin: 0; align-self: center"><a class="ef-btn small" href="https://github.com/qwertyuio196875/AI-Think-Forge" target="_blank" rel="noopener">在 GitHub 查看</a></p>
+            </div>
+            <div class="prj" style="border-bottom: 0">
+              <div>
+                <p class="t">python-speedrun</p>
+                <p class="d ef-read">Python 速通 · 面向 Java 开发者的 5~10 小时过关路线。</p>
+                <p class="meta ef-field"><span class="lang">JavaScript</span><span>0 星</span><span>2026 年更新</span></p>
+              </div>
+              <p class="ef-actions" style="margin: 0; align-self: center"><a class="ef-btn small" href="https://github.com/qwertyuio196875/python-speedrun" target="_blank" rel="noopener">在 GitHub 查看</a></p>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <!-- A 友链 -->
+      <section class="pg a-sheetwrap" data-pg="links" hidden>
+        <article class="ef-spread">
+          <div class="ef-sheet">
+            <p class="ef-eyebrow slash">Links</p>
+            <header class="ef-sheet-head"><h1 class="ef-read">友链</h1><p class="ef-field">共 3 条</p></header>
+            <p class="ef-lede ef-read">朋友们的地方。交换友链请到 GitHub 仓库提 issue（示例说明）。</p>
+            <div class="lnk">
+              <p class="n"><a href="https://kunxing-blog.top" target="_blank" rel="noopener">kunxing 的博客</a></p>
+              <p class="d ef-read">本站参考的 Vue 个人博客。</p>
+              <p class="ef-field">kunxing-blog.top</p>
+            </div>
+            <div class="lnk">
+              <p class="n">示例：阿菜的笔记</p>
+              <p class="d ef-read">占位友链，上线前在 friends.json 里替换。</p>
+              <p class="ef-field">example.com</p>
+            </div>
+            <div class="lnk" style="border-bottom: 0">
+              <p class="n">示例：老王的折腾记录</p>
+              <p class="d ef-read">占位友链。</p>
+              <p class="ef-field">example.com</p>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <!-- A 关于 -->
+      <section class="pg a-sheetwrap" data-pg="about" hidden>
+        <article class="ef-spread">
+          <div class="ef-sheet">
+            <p class="ef-eyebrow slash">About</p>
+            <header class="ef-sheet-head"><h1 class="ef-read">关于</h1><p class="ef-field">qwertyuio196875</p></header>
+            <p class="ef-lede ef-read">示例占位介绍，上线前替换成自己的话。</p>
+            <div class="ef-prose">
+              <p>qwertyuio196875，Java 后端开发。学的时候热血沸腾，过两天记忆清空，所以把零散的思考和实践记在这里，督促自己持续总结，也给未来的自己留一份能翻回去的记录。</p>
+              <p>正在做的事：把 AI 工具链接进日常开发——工单自动分类、想法打磨、教学仓库，都在项目页里。</p>
+            </div>
+            <ul class="ef-ledger">
+              <li><span>技术栈</span><span class="ef-field">Java / Spring Boot / Vue</span></li>
+              <li><span>在学</span><span class="ef-field">Python / Spring AI</span></li>
+              <li><span>随笔 · 说说</span><span class="ef-field">6 篇 / 5 条</span></li>
+            </ul>
+            <p class="ef-actions"><a class="ef-btn go" href="https://github.com/qwertyuio196875" target="_blank" rel="noopener">GitHub 主页</a></p>
+          </div>
+        </article>
+      </section>
+
+      <footer class="site-foot ef-field">
+        <span>QWERTYUIO196875</span>
+        <span>原型示例数据 · 2026.10.24</span>
+        <a href="#">RSS</a>
+        <a href="https://github.com/qwertyuio196875" target="_blank" rel="noopener">GitHub</a>
+      </footer>
+    </div>
+
+    <!-- ================================================================
+         变体 B · 左侧栏 · 运行日志
+         ================================================================ -->
+    <div class="vpane" data-vpane="B" data-page="home" hidden>
+      <div class="b-shell">
+        <nav class="ef-rail b-rail" aria-label="主导航">
+          <a class="brand" href="#" data-nav="home" style="font-size: 0.8rem; letter-spacing: 0.04em">QWERTYUIO196875</a>
+          <a href="#" data-nav="home"><small>Home</small>首页</a>
+          <a href="#" data-nav="essays"><small>Essays</small>随笔</a>
+          <a href="#" data-nav="moments"><small>Moments</small>说说</a>
+          <a href="#" data-nav="projects"><small>Projects</small>项目</a>
+          <a href="#" data-nav="links"><small>Links</small>友链</a>
+          <a href="#" data-nav="about"><small>About</small>关于</a>
+          <div class="rail-foot">
+            <button class="ef-btn small" type="button" data-theme-toggle style="width: 100%">切换深浅</button>
+          </div>
+        </nav>
+
+        <main class="b-mainwrap">
+          <!-- B 首页 -->
+          <section class="pg b-main" data-pg="home">
+            <div class="b-pagepad">
+              <header class="ef-head">
+                <h1>QWERTYUIO196875 <small>Personal Log</small></h1>
+                <p>一个人在写的运行日志：随笔、说说、项目与朋友。</p>
+              </header>
+              <div class="b-figs">
+                <a href="#" data-nav="essays"><p class="ef-eyebrow slash">Essays</p><b class="num" data-fx-load>6</b><span class="ef-field">随笔 / 篇</span></a>
+                <a href="#" data-nav="moments"><p class="ef-eyebrow slash">Moments</p><b class="num" data-fx-load>5</b><span class="ef-field">说说 / 条</span></a>
+                <a href="#" data-nav="projects"><p class="ef-eyebrow slash">Projects</p><b class="num" data-fx-load>3</b><span class="ef-field">项目 / 个</span></a>
+                <a href="#" data-nav="links"><p class="ef-eyebrow slash">Links</p><b class="num" data-fx-load>3</b><span class="ef-field">友链 / 条</span></a>
+              </div>
+              <div class="b-cols">
+                <section class="ef-panel">
+                  <h2>最新随笔 <a href="#" data-nav="essays">全部</a></h2>
+                  <ul class="ef-rows">
+                    <li>
+                      <div><div>给 Java 开发者的 Python 速通路线</div><div class="meta"><span>No.006</span><span>2026.10.21</span><span>3,214 字</span></div></div>
+                      <div class="acts"><a class="ef-btn small go" href="#" data-nav="essay">阅读</a></div>
+                    </li>
+                    <li>
+                      <div><div>用 Spring AI 自动分类工单</div><div class="meta"><span>No.005</span><span>2026.10.09</span><span>5,802 字</span></div></div>
+                      <div class="acts"><a class="ef-btn small" href="#" data-nav="essay">阅读</a></div>
+                    </li>
+                    <li>
+                      <div><div>AI-Think-Forge 设计记</div><div class="meta"><span>No.004</span><span>2026.09.18</span><span>4,377 字</span></div></div>
+                      <div class="acts"><a class="ef-btn small" href="#" data-nav="essay">阅读</a></div>
+                    </li>
+                  </ul>
+                </section>
+                <section class="ef-panel">
+                  <h2>最近说说 <a href="#" data-nav="moments">全部</a></h2>
+                  <ul class="ef-rows">
+                    <li><div><div class="ef-read">今晚把博客原型撸出来了，三套方案自己先挑花眼。</div><div class="meta"><span>2026.10.23</span></div></div></li>
+                    <li><div><div class="ef-read">Spring AI 的 ChatClient 写起来比想象中顺手。</div><div class="meta"><span>2026.10.20</span></div></div></li>
+                    <li><div><div class="ef-read">python-speedrun 的 clone 数破 100 了。</div><div class="meta"><span>2026.10.15</span></div></div></li>
+                  </ul>
+                </section>
+              </div>
+              <section class="ef-panel" style="margin-top: 1.25rem">
+                <h2>项目 <a href="#" data-nav="projects">全部</a></h2>
+                <ul class="ef-rows">
+                  <li>
+                    <div><div>AI-Ticket-Management</div><div class="meta"><span>Java</span><span>1 星</span><span>Spring Boot 3 + Spring AI + Vue 3</span></div></div>
+                    <div class="acts"><a class="ef-btn small" href="https://github.com/qwertyuio196875/AI-Ticket-Management" target="_blank" rel="noopener">GitHub</a></div>
+                  </li>
+                  <li>
+                    <div><div>AI-Think-Forge</div><div class="meta"><span>Python</span><span>0 星</span><span>把模糊想法打磨成成品</span></div></div>
+                    <div class="acts"><a class="ef-btn small" href="https://github.com/qwertyuio196875/AI-Think-Forge" target="_blank" rel="noopener">GitHub</a></div>
+                  </li>
+                  <li>
+                    <div><div>python-speedrun</div><div class="meta"><span>JavaScript</span><span>0 星</span><span>面向 Java 开发者的过关路线</span></div></div>
+                    <div class="acts"><a class="ef-btn small" href="https://github.com/qwertyuio196875/python-speedrun" target="_blank" rel="noopener">GitHub</a></div>
+                  </li>
+                </ul>
+              </section>
+            </div>
+          </section>
+
+          <!-- B 随笔列表 -->
+          <section class="pg b-main b-pagepad" data-pg="essays" hidden>
+            <article class="ef-spread">
+              <div class="ef-sheet">
+                <p class="ef-eyebrow slash">Essays</p>
+                <header class="ef-sheet-head"><h1 class="ef-read">随笔</h1><p class="ef-field">共 6 篇</p></header>
+                <div class="listwrap">
+                  <p class="chips">
+                    <button class="ef-chip" type="button" data-tag="*" aria-pressed="true">全部 <span class="n">6</span></button>
+                    <button class="ef-chip" type="button" data-tag="java" aria-pressed="false">Java <span class="n">2</span></button>
+                    <button class="ef-chip" type="button" data-tag="ai" aria-pressed="false">AI <span class="n">2</span></button>
+                    <button class="ef-chip" type="button" data-tag="python" aria-pressed="false">Python <span class="n">1</span></button>
+                    <button class="ef-chip" type="button" data-tag="git" aria-pressed="false">Git <span class="n">1</span></button>
+                    <button class="ef-chip" type="button" data-tag="redis" aria-pressed="false">Redis <span class="n">1</span></button>
+                    <button class="ef-chip" type="button" data-tag="tools" aria-pressed="false">工具 <span class="n">1</span></button>
+                    <button class="ef-chip" type="button" data-tag="note" aria-pressed="false">随笔 <span class="n">1</span></button>
+                  </p>
+                  <h2 class="ef-group-head ef-read"><span>2026</span><span class="ef-field">6 篇</span></h2>
+                  <ol class="ef-records">
+                    <li><a class="ef-record" href="#" data-nav="essay" data-tags="python"><span class="ef-tag is-current">No.006</span><time class="ef-field">2026.10.21</time><span class="name ef-read">给 Java 开发者的 Python 速通路线</span><span class="ef-field">3,214 字</span></a></li>
+                    <li><a class="ef-record" href="#" data-nav="essay" data-tags="java ai"><span class="ef-tag">No.005</span><time class="ef-field">2026.10.09</time><span class="name ef-read">用 Spring AI 自动分类工单</span><span class="ef-field">5,802 字</span></a></li>
+                    <li><a class="ef-record" href="#" data-nav="essay" data-tags="ai tools"><span class="ef-tag">No.004</span><time class="ef-field">2026.09.18</time><span class="name ef-read">AI-Think-Forge 设计记</span><span class="ef-field">4,377 字</span></a></li>
+                    <li><a class="ef-record" href="#" data-nav="essay" data-tags="git"><span class="ef-tag">No.003</span><time class="ef-field">2026.08.30</time><span class="name ef-read">Git 教学仓库整理术</span><span class="ef-field">2,045 字</span></a></li>
+                    <li><a class="ef-record" href="#" data-nav="essay" data-tags="java redis"><span class="ef-tag">No.002</span><time class="ef-field">2026.08.12</time><span class="name ef-read">智慧养老项目里的 Redis 缓存优化</span><span class="ef-field">6,380 字</span></a></li>
+                    <li><a class="ef-record" href="#" data-nav="essay" data-tags="note"><span class="ef-tag">No.001</span><time class="ef-field">2026.07.25</time><span class="name ef-read">为什么又开始写博客</span><span class="ef-field">1,208 字</span></a></li>
+                  </ol>
+                </div>
+              </div>
+            </article>
+          </section>
+
+          <!-- B 随笔详情 -->
+          <section class="pg b-main b-pagepad" data-pg="essay" hidden>
+            <article class="ef-spread">
+              <div class="ef-sheet">
+                <p class="ef-crumb ef-field"><a href="#" data-nav="essays">全部随笔</a><span>Python</span></p>
+                <p style="display: flex; gap: 0.5rem; margin: 0 0 0.75rem">
+                  <a class="ef-tag is-current" href="#" data-nav="essay">No.006</a>
+                  <a class="ef-kv" href="#" data-nav="essays"><span>标签</span><span>Python</span></a>
+                </p>
+                <ul class="ef-facts ef-field"><li><time>2026.10.21</time></li><li>3,214 字</li><li>约 8 分钟</li></ul>
+                <h1 class="ef-read" style="font-size: clamp(1.8rem, 3.6vw, 2.5rem); font-weight: 700; line-height: 1.25; margin: 1.5rem 0 1rem">给 Java 开发者的 Python 速通路线</h1>
+                <div class="ef-tri" aria-hidden="true"><i></i><i></i><i></i></div>
+                <p class="ef-lede ef-read">示例摘要：从 Java 的肌肉记忆切换到 Python 的直觉。</p>
+                <div class="ef-prose">
+                  <p>示例正文（占位）。<strong>强调用粗体</strong>，行内代码 <code>dataclass Slot:</code> 用等宽字体。</p>
+                  <h2>一、先扔掉的想法</h2>
+                  <p>示例段落，正式内容上线时替换。</p>
+                  <blockquote>示例引用：接口小、行为少，在哪门语言里都是好味道。</blockquote>
+                </div>
+              </div>
+            </article>
+          </section>
+
+          <!-- B 说说 -->
+          <section class="pg b-main b-pagepad" data-pg="moments" hidden>
+            <article class="ef-spread">
+              <div class="ef-sheet">
+                <p class="ef-eyebrow slash">Moments</p>
+                <header class="ef-sheet-head"><h1 class="ef-read">说说</h1><p class="ef-field">共 5 条</p></header>
+                <div class="mo">
+                  <time class="ef-field" datetime="2026-10-23">2026.10.23 21:40</time>
+                  <div><p class="ef-read">今晚把博客原型撸出来了，三套方案自己先挑花眼。</p></div>
+                </div>
+                <div class="mo">
+                  <time class="ef-field" datetime="2026-10-20">2026.10.20 12:12</time>
+                  <div><p class="ef-read">Spring AI 的 ChatClient 写起来比想象中顺手，就是 token 花得心疼。</p></div>
+                </div>
+                <div class="mo">
+                  <time class="ef-field" datetime="2026-10-15">2026.10.15 23:05</time>
+                  <div>
+                    <p class="ef-read">python-speedrun 的 clone 数破 100 了，写条说说纪念。</p>
+                    <figure class="ef-frame mo-img" style="height: 9.5rem">
+                      <div class="window">
+                        <svg viewBox="0 0 220 130" fill="none" stroke="currentColor" stroke-width="1" aria-label="示例图片占位">
+                          <rect x="1" y="1" width="218" height="128" />
+                          <g opacity=".3"><line x1="20" y1="128" x2="148" y2="0" /><line x1="60" y1="128" x2="188" y2="0" /><line x1="100" y1="128" x2="218" y2="10" /><line x1="140" y1="128" x2="218" y2="50" /></g>
+                          <text x="110" y="70" text-anchor="middle" font-size="12" letter-spacing="3" fill="currentColor" stroke="none" font-family="Saira, sans-serif">示例图片</text>
+                        </svg>
+                      </div>
+                    </figure>
+                  </div>
+                </div>
+                <div class="mo">
+                  <time class="ef-field" datetime="2026-10-08">2026.10.08 09:30</time>
+                  <div><p class="ef-read">雨天的周末，适合整理 Git 教学仓库。</p></div>
+                </div>
+                <div class="mo">
+                  <time class="ef-field" datetime="2026-09-28">2026.09.28 22:17</time>
+                  <div><p class="ef-read">AI-Ticket-Management 跑通了第一条自动分类的端到端流程。</p></div>
+                </div>
+              </div>
+            </article>
+          </section>
+
+          <!-- B 项目 -->
+          <section class="pg b-main b-pagepad" data-pg="projects" hidden>
+            <article class="ef-spread">
+              <div class="ef-sheet">
+                <p class="ef-eyebrow slash">Projects</p>
+                <header class="ef-sheet-head"><h1 class="ef-read">项目</h1><p class="ef-field">共 3 个</p></header>
+                <p class="ef-lede ef-read">构建时自动从 GitHub 拉取（示例快照 2026.10.24）。</p>
+                <div class="prj">
+                  <div>
+                    <p class="t">AI-Ticket-Management</p>
+                    <p class="d ef-read">基于 Spring Boot 3 + Spring AI + Vue 3 构建的 AI 智能工单管理系统。</p>
+                    <p class="meta ef-field"><span class="lang">Java</span><span>1 星</span></p>
+                  </div>
+                  <p class="ef-actions" style="margin: 0; align-self: center"><a class="ef-btn small" href="https://github.com/qwertyuio196875/AI-Ticket-Management" target="_blank" rel="noopener">在 GitHub 查看</a></p>
+                </div>
+                <div class="prj">
+                  <div>
+                    <p class="t">AI-Think-Forge</p>
+                    <p class="d ef-read">把一句模糊的想法，打磨成一份可交付的成品。</p>
+                    <p class="meta ef-field"><span class="lang">Python</span><span>0 星</span></p>
+                  </div>
+                  <p class="ef-actions" style="margin: 0; align-self: center"><a class="ef-btn small" href="https://github.com/qwertyuio196875/AI-Think-Forge" target="_blank" rel="noopener">在 GitHub 查看</a></p>
+                </div>
+                <div class="prj" style="border-bottom: 0">
+                  <div>
+                    <p class="t">python-speedrun</p>
+                    <p class="d ef-read">Python 速通 · 面向 Java 开发者的 5~10 小时过关路线。</p>
+                    <p class="meta ef-field"><span class="lang">JavaScript</span><span>0 星</span></p>
+                  </div>
+                  <p class="ef-actions" style="margin: 0; align-self: center"><a class="ef-btn small" href="https://github.com/qwertyuio196875/python-speedrun" target="_blank" rel="noopener">在 GitHub 查看</a></p>
+                </div>
+              </div>
+            </article>
+          </section>
+
+          <!-- B 友链 -->
+          <section class="pg b-main b-pagepad" data-pg="links" hidden>
+            <article class="ef-spread">
+              <div class="ef-sheet">
+                <p class="ef-eyebrow slash">Links</p>
+                <header class="ef-sheet-head"><h1 class="ef-read">友链</h1><p class="ef-field">共 3 条</p></header>
+                <div class="lnk">
+                  <p class="n"><a href="https://kunxing-blog.top" target="_blank" rel="noopener">kunxing 的博客</a></p>
+                  <p class="d ef-read">本站参考的 Vue 个人博客。</p>
+                  <p class="ef-field">kunxing-blog.top</p>
+                </div>
+                <div class="lnk">
+                  <p class="n">示例：阿菜的笔记</p>
+                  <p class="d ef-read">占位友链，上线前在 friends.json 里替换。</p>
+                  <p class="ef-field">example.com</p>
+                </div>
+                <div class="lnk" style="border-bottom: 0">
+                  <p class="n">示例：老王的折腾记录</p>
+                  <p class="d ef-read">占位友链。</p>
+                  <p class="ef-field">example.com</p>
+                </div>
+              </div>
+            </article>
+          </section>
+
+          <!-- B 关于 -->
+          <section class="pg b-main b-pagepad" data-pg="about" hidden>
+            <article class="ef-spread">
+              <div class="ef-sheet">
+                <p class="ef-eyebrow slash">About</p>
+                <header class="ef-sheet-head"><h1 class="ef-read">关于</h1><p class="ef-field">qwertyuio196875</p></header>
+                <div class="ef-prose">
+                  <p>示例占位：Java 后端开发，正在把 AI 工具链接进日常开发。把零散的思考记在这里，督促自己持续总结。</p>
+                </div>
+                <ul class="ef-ledger">
+                  <li><span>技术栈</span><span class="ef-field">Java / Spring Boot / Vue</span></li>
+                  <li><span>在学</span><span class="ef-field">Python / Spring AI</span></li>
+                </ul>
+                <p class="ef-actions"><a class="ef-btn go" href="https://github.com/qwertyuio196875" target="_blank" rel="noopener">GitHub 主页</a></p>
+              </div>
+            </article>
+          </section>
+
+          <footer class="site-foot ef-field">
+            <span>QWERTYUIO196875</span>
+            <span>原型示例数据 · 2026.10.24</span>
+            <a href="#">RSS</a>
+            <a href="https://github.com/qwertyuio196875" target="_blank" rel="noopener">GitHub</a>
+          </footer>
+        </main>
+      </div>
+    </div>
+
+    <!-- ================================================================
+         变体 C · 极简 · 大开本杂志
+         ================================================================ -->
+    <div class="vpane" data-vpane="C" data-page="home" hidden>
+      <header class="c-top">
+        <a class="brand" href="#" data-nav="home">QWERTYUIO196875</a>
+        <nav aria-label="主导航">
+          <a href="#" data-nav="home">首页</a>
+          <a href="#" data-nav="essays">随笔</a>
+          <a href="#" data-nav="moments">说说</a>
+          <a href="#" data-nav="projects">项目</a>
+          <a href="#" data-nav="links">友链</a>
+          <a href="#" data-nav="about">关于</a>
+        </nav>
+        <div class="util">
+          <button class="ef-btn small" type="button" data-theme-toggle>切换深浅</button>
+        </div>
+      </header>
+
+      <!-- C 首页 -->
+      <section class="pg" data-pg="home">
+        <div class="c-hero">
+          <p class="meta ef-field">
+            <time>2026.10.24</time>
+            <span>随笔 <b data-fx-load>6</b> 篇</span>
+            <span>说说 <b data-fx-load>5</b> 条</span>
+            <span>项目 <b data-fx-load>3</b> 个</span>
+            <span><b data-fx-load>23,026</b> 字</span>
+          </p>
+          <h1 class="ef-wordmark">
+            <span class="solid ef-in-drive">QWERTYUIO</span>
+            <span class="hollow ef-in-drive" style="animation-delay: 140ms" aria-hidden="true">196875</span>
+          </h1>
+          <p class="claim"><span class="ef-marker ef-in-stroke">把学过的东西写下来，免得忘掉。</span></p>
+          <p class="bio ef-read">示例简介：qwertyuio196875 的个人博客。Java 后端出身，正在把 AI 工具链接进日常开发。</p>
+        </div>
+
+        <section class="c-sec">
+          <div class="c-sec-head">
+            <span class="ef-hollow-no" aria-hidden="true">01</span>
+            <h2 class="ef-pair"><span class="ef-eyebrow">Essays</span><span>随笔</span></h2>
+            <p class="ef-actions"><span class="ef-field">共 6 篇</span><a class="ef-btn small" href="#" data-nav="essays">查看全部</a></p>
+          </div>
+          <div class="c-biglist">
+            <a class="c-big" href="#" data-nav="essay">
+              <time class="ef-field" datetime="2026-10-21">2026.10.21</time>
+              <span><span class="t">给 Java 开发者的 Python 速通路线</span><span class="sub ef-read">示例摘要：从 Java 的肌肉记忆切换到 Python 的直觉。</span></span>
+              <span class="ef-field">3,214 字</span>
+            </a>
+            <a class="c-big" href="#" data-nav="essays">
+              <time class="ef-field" datetime="2026-10-09">2026.10.09</time>
+              <span><span class="t">用 Spring AI 自动分类工单</span><span class="sub ef-read">示例摘要：ChatClient、Advisor 与嵌入的取舍得失。</span></span>
+              <span class="ef-field">5,802 字</span>
+            </a>
+            <a class="c-big" href="#" data-nav="essays" style="border-bottom: 0">
+              <time class="ef-field" datetime="2026-09-18">2026.09.18</time>
+              <span><span class="t">AI-Think-Forge 设计记</span><span class="sub ef-read">示例摘要：把一句模糊想法打磨成成品的全过程。</span></span>
+              <span class="ef-field">4,377 字</span>
+            </a>
+          </div>
+        </section>
+
+        <section class="c-sec">
+          <div class="c-sec-head">
+            <span class="ef-hollow-no" aria-hidden="true">02</span>
+            <h2 class="ef-pair"><span class="ef-eyebrow">Moments</span><span>说说</span></h2>
+            <p class="ef-actions"><span class="ef-field">共 5 条</span><a class="ef-btn small" href="#" data-nav="moments">查看全部</a></p>
+          </div>
+          <div class="c-mo">
+            <time class="ef-field" datetime="2026-10-23">2026.10.23 21:40</time>
+            <p class="ef-read">今晚把博客原型撸出来了，三套方案自己先挑花眼。</p>
+          </div>
+          <div class="c-mo">
+            <time class="ef-field" datetime="2026-10-20">2026.10.20 12:12</time>
+            <p class="ef-read">Spring AI 的 ChatClient 写起来比想象中顺手，就是 token 花得心疼。</p>
+          </div>
+          <div class="c-mo" style="border-bottom: 0">
+            <time class="ef-field" datetime="2026-10-15">2026.10.15 23:05</time>
+            <p class="ef-read">python-speedrun 的 clone 数破 100 了，写条说说纪念。</p>
+          </div>
+        </section>
+
+        <section class="c-sec">
+          <div class="c-sec-head">
+            <span class="ef-hollow-no" aria-hidden="true">03</span>
+            <h2 class="ef-pair"><span class="ef-eyebrow">Projects</span><span>项目</span></h2>
+            <p class="ef-actions"><span class="ef-field">共 3 个</span><a class="ef-btn small" href="#" data-nav="projects">查看全部</a></p>
+          </div>
+          <div class="c-biglist">
+            <div class="c-big">
+              <span class="ef-field">Java</span>
+              <span><span class="t">AI-Ticket-Management</span><span class="sub ef-read">Spring Boot 3 + Spring AI + Vue 3 的 AI 智能工单管理系统。</span></span>
+              <span class="ef-field">1 星</span>
+            </div>
+            <div class="c-big">
+              <span class="ef-field">Python</span>
+              <span><span class="t">AI-Think-Forge</span><span class="sub ef-read">把一句模糊的想法，打磨成一份可交付的成品。</span></span>
+              <span class="ef-field">0 星</span>
+            </div>
+            <div class="c-big" style="border-bottom: 0">
+              <span class="ef-field">JavaScript</span>
+              <span><span class="t">python-speedrun</span><span class="sub ef-read">面向 Java 开发者的 5~10 小时 Python 过关路线。</span></span>
+              <span class="ef-field">0 星</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="c-sec" style="border-bottom: 0">
+          <div class="c-sec-head">
+            <span class="ef-hollow-no" aria-hidden="true">04</span>
+            <h2 class="ef-pair"><span class="ef-eyebrow">Links</span><span>友链</span></h2>
+            <p class="ef-actions"><span class="ef-field">共 3 条</span><a class="ef-btn small" href="#" data-nav="links">查看全部</a></p>
+          </div>
+          <div class="lnk">
+            <p class="n"><a href="https://kunxing-blog.top" target="_blank" rel="noopener">kunxing 的博客</a></p>
+            <p class="d ef-read">本站参考的 Vue 个人博客。</p>
+            <p class="ef-field">kunxing-blog.top</p>
+          </div>
+          <div class="lnk">
+            <p class="n">示例：阿菜的笔记</p>
+            <p class="d ef-read">占位友链。</p>
+            <p class="ef-field">example.com</p>
+          </div>
+          <div class="lnk" style="border-bottom: 0">
+            <p class="n">示例：老王的折腾记录</p>
+            <p class="d ef-read">占位友链。</p>
+            <p class="ef-field">example.com</p>
+          </div>
+        </section>
+      </section>
+
+      <!-- C 随笔列表 -->
+      <section class="pg" data-pg="essays" hidden>
+        <div class="c-read">
+          <p class="ef-eyebrow slash">Essays</p>
+          <h2 class="ef-bar-title">随笔</h2>
+          <p class="ef-field" style="margin: 0.4rem 0 1.5rem">共 6 篇 · 字数合计 23,026 字</p>
+          <div class="listwrap">
+            <p class="chips">
+              <button class="ef-chip" type="button" data-tag="*" aria-pressed="true">全部 <span class="n">6</span></button>
+              <button class="ef-chip" type="button" data-tag="java" aria-pressed="false">Java <span class="n">2</span></button>
+              <button class="ef-chip" type="button" data-tag="ai" aria-pressed="false">AI <span class="n">2</span></button>
+              <button class="ef-chip" type="button" data-tag="python" aria-pressed="false">Python <span class="n">1</span></button>
+              <button class="ef-chip" type="button" data-tag="git" aria-pressed="false">Git <span class="n">1</span></button>
+              <button class="ef-chip" type="button" data-tag="redis" aria-pressed="false">Redis <span class="n">1</span></button>
+              <button class="ef-chip" type="button" data-tag="tools" aria-pressed="false">工具 <span class="n">1</span></button>
+              <button class="ef-chip" type="button" data-tag="note" aria-pressed="false">随笔 <span class="n">1</span></button>
+            </p>
+            <div class="c-biglist">
+              <a class="c-big" href="#" data-nav="essay" data-tags="python">
+                <time class="ef-field" datetime="2026-10-21">2026.10.21</time>
+                <span><span class="t">给 Java 开发者的 Python 速通路线</span><span class="sub ef-read">No.006 · Python</span></span>
+                <span class="ef-field">3,214 字</span>
+              </a>
+              <a class="c-big" href="#" data-nav="essay" data-tags="java ai">
+                <time class="ef-field" datetime="2026-10-09">2026.10.09</time>
+                <span><span class="t">用 Spring AI 自动分类工单</span><span class="sub ef-read">No.005 · Java / AI</span></span>
+                <span class="ef-field">5,802 字</span>
+              </a>
+              <a class="c-big" href="#" data-nav="essay" data-tags="ai tools">
+                <time class="ef-field" datetime="2026-09-18">2026.09.18</time>
+                <span><span class="t">AI-Think-Forge 设计记</span><span class="sub ef-read">No.004 · AI / 工具</span></span>
+                <span class="ef-field">4,377 字</span>
+              </a>
+              <a class="c-big" href="#" data-nav="essay" data-tags="git">
+                <time class="ef-field" datetime="2026-08-30">2026.08.30</time>
+                <span><span class="t">Git 教学仓库整理术</span><span class="sub ef-read">No.003 · Git</span></span>
+                <span class="ef-field">2,045 字</span>
+              </a>
+              <a class="c-big" href="#" data-nav="essay" data-tags="java redis">
+                <time class="ef-field" datetime="2026-08-12">2026.08.12</time>
+                <span><span class="t">智慧养老项目里的 Redis 缓存优化</span><span class="sub ef-read">No.002 · Java / Redis</span></span>
+                <span class="ef-field">6,380 字</span>
+              </a>
+              <a class="c-big" href="#" data-nav="essay" data-tags="note" style="border-bottom: 0">
+                <time class="ef-field" datetime="2026-07-25">2026.07.25</time>
+                <span><span class="t">为什么又开始写博客</span><span class="sub ef-read">No.001 · 随笔</span></span>
+                <span class="ef-field">1,208 字</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- C 随笔详情 -->
+      <section class="pg" data-pg="essay" hidden>
+        <div class="c-read">
+          <p class="ef-crumb ef-field"><a href="#" data-nav="essays">全部随笔</a><span>Python</span></p>
+          <p style="display: flex; gap: 0.5rem; margin: 1.25rem 0 0.75rem">
+            <a class="ef-tag is-current" href="#" data-nav="essay">No.006</a>
+            <a class="ef-kv" href="#" data-nav="essays"><span>标签</span><span>Python</span></a>
+          </p>
+          <ul class="ef-facts ef-field"><li><time>2026.10.21</time></li><li>3,214 字</li><li>约 8 分钟</li></ul>
+          <h1 class="title">给 Java 开发者的 Python 速通路线</h1>
+          <div class="ef-tri" aria-hidden="true"><i></i><i></i><i></i></div>
+          <p class="ef-lede ef-read">示例摘要：从 Java 的肌肉记忆切换到 Python 的直觉。</p>
+          <div class="ef-prose">
+            <p>示例正文（占位）。大开本阅读页：更大的标题、更宽的留白，正文仍是约 38 字一行。</p>
+            <h2>一、先扔掉的想法</h2>
+            <p>示例段落，正式内容上线时替换。行内代码 <code>dataclass Slot:</code>。</p>
+            <blockquote>示例引用：接口小、行为少，在哪门语言里都是好味道。</blockquote>
+          </div>
+          <h2 class="ef-group-head ef-read" style="margin-top: 2.5rem"><span>相关随笔</span><span class="ef-field">2 篇</span></h2>
+          <div class="c-biglist">
+            <a class="c-big" href="#" data-nav="essays">
+              <time class="ef-field" datetime="2026-10-09">2026.10.09</time>
+              <span><span class="t" style="font-size: 1.3rem">用 Spring AI 自动分类工单</span></span>
+              <span class="ef-field">5,802 字</span>
+            </a>
+            <a class="c-big" href="#" data-nav="essays" style="border-bottom: 0">
+              <time class="ef-field" datetime="2026-09-18">2026.09.18</time>
+              <span><span class="t" style="font-size: 1.3rem">AI-Think-Forge 设计记</span></span>
+              <span class="ef-field">4,377 字</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- C 说说 -->
+      <section class="pg" data-pg="moments" hidden>
+        <div class="c-read">
+          <p class="ef-eyebrow slash">Moments</p>
+          <h2 class="ef-bar-title">说说</h2>
+          <p class="ef-field" style="margin: 0.4rem 0 1rem">共 5 条</p>
+          <div class="c-mo">
+            <time class="ef-field" datetime="2026-10-23">2026.10.23 21:40</time>
+            <p class="ef-read">今晚把博客原型撸出来了，三套方案自己先挑花眼。</p>
+          </div>
+          <div class="c-mo">
+            <time class="ef-field" datetime="2026-10-20">2026.10.20 12:12</time>
+            <p class="ef-read">Spring AI 的 ChatClient 写起来比想象中顺手，就是 token 花得心疼。</p>
+          </div>
+          <div class="c-mo">
+            <time class="ef-field" datetime="2026-10-15">2026.10.15 23:05</time>
+            <p class="ef-read">python-speedrun 的 clone 数破 100 了，写条说说纪念。</p>
+            <figure class="ef-frame mo-img" style="height: 9.5rem">
+              <div class="window">
+                <svg viewBox="0 0 220 130" fill="none" stroke="currentColor" stroke-width="1" aria-label="示例图片占位">
+                  <rect x="1" y="1" width="218" height="128" />
+                  <g opacity=".3"><line x1="20" y1="128" x2="148" y2="0" /><line x1="60" y1="128" x2="188" y2="0" /><line x1="100" y1="128" x2="218" y2="10" /><line x1="140" y1="128" x2="218" y2="50" /></g>
+                  <text x="110" y="70" text-anchor="middle" font-size="12" letter-spacing="3" fill="currentColor" stroke="none" font-family="Saira, sans-serif">示例图片</text>
+                </svg>
+              </div>
+            </figure>
+          </div>
+          <div class="c-mo">
+            <time class="ef-field" datetime="2026-10-08">2026.10.08 09:30</time>
+            <p class="ef-read">雨天的周末，适合整理 Git 教学仓库。</p>
+          </div>
+          <div class="c-mo" style="border-bottom: 0">
+            <time class="ef-field" datetime="2026-09-28">2026.09.28 22:17</time>
+            <p class="ef-read">AI-Ticket-Management 跑通了第一条自动分类的端到端流程。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- C 项目 -->
+      <section class="pg" data-pg="projects" hidden>
+        <div class="c-read">
+          <p class="ef-eyebrow slash">Projects</p>
+          <h2 class="ef-bar-title">项目</h2>
+          <p class="ef-field" style="margin: 0.4rem 0 1.5rem">共 3 个 · 构建时自动从 GitHub 拉取（示例快照 2026.10.24）</p>
+          <div class="c-biglist">
+            <div class="c-big">
+              <span class="ef-field">Java</span>
+              <span><span class="t">AI-Ticket-Management</span><span class="sub ef-read">Spring Boot 3 + Spring AI + Vue 3 的 AI 智能工单管理系统。</span></span>
+              <span class="ef-field">1 星</span>
+            </div>
+            <div class="c-big">
+              <span class="ef-field">Python</span>
+              <span><span class="t">AI-Think-Forge</span><span class="sub ef-read">把一句模糊的想法，打磨成一份可交付的成品。</span></span>
+              <span class="ef-field">0 星</span>
+            </div>
+            <div class="c-big" style="border-bottom: 0">
+              <span class="ef-field">JavaScript</span>
+              <span><span class="t">python-speedrun</span><span class="sub ef-read">面向 Java 开发者的 5~10 小时 Python 过关路线。</span></span>
+              <span class="ef-field">0 星</span>
+            </div>
+          </div>
+          <p class="ef-actions" style="margin-top: 1.5rem"><a class="ef-btn go" href="https://github.com/qwertyuio196875" target="_blank" rel="noopener">GitHub 主页</a></p>
+        </div>
+      </section>
+
+      <!-- C 友链 -->
+      <section class="pg" data-pg="links" hidden>
+        <div class="c-read">
+          <p class="ef-eyebrow slash">Links</p>
+          <h2 class="ef-bar-title">友链</h2>
+          <p class="ef-field" style="margin: 0.4rem 0 1rem">共 3 条</p>
+          <div class="lnk">
+            <p class="n"><a href="https://kunxing-blog.top" target="_blank" rel="noopener">kunxing 的博客</a></p>
+            <p class="d ef-read">本站参考的 Vue 个人博客。</p>
+            <p class="ef-field">kunxing-blog.top</p>
+          </div>
+          <div class="lnk">
+            <p class="n">示例：阿菜的笔记</p>
+            <p class="d ef-read">占位友链，上线前在 friends.json 里替换。</p>
+            <p class="ef-field">example.com</p>
+          </div>
+          <div class="lnk" style="border-bottom: 0">
+            <p class="n">示例：老王的折腾记录</p>
+            <p class="d ef-read">占位友链。</p>
+            <p class="ef-field">example.com</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- C 关于 -->
+      <section class="pg" data-pg="about" hidden>
+        <div class="c-read">
+          <p class="ef-eyebrow slash">About</p>
+          <h2 class="ef-bar-title">关于</h2>
+          <p class="ef-field" style="margin: 0.4rem 0 1.25rem">qwertyuio196875</p>
+          <div class="ef-prose">
+            <p>示例占位：Java 后端开发，正在把 AI 工具链接进日常开发。把零散的思考和实践记在这里，督促自己持续总结，也给未来的自己留一份能翻回去的记录。</p>
+          </div>
+          <ul class="ef-ledger">
+            <li><span>技术栈</span><span class="ef-field">Java / Spring Boot / Vue</span></li>
+            <li><span>在学</span><span class="ef-field">Python / Spring AI</span></li>
+            <li><span>随笔 · 说说</span><span class="ef-field">6 篇 / 5 条</span></li>
+          </ul>
+          <p class="ef-actions"><a class="ef-btn go" href="https://github.com/qwertyuio196875" target="_blank" rel="noopener">GitHub 主页</a></p>
+        </div>
+      </section>
+
+      <footer class="site-foot ef-field">
+        <span>QWERTYUIO196875</span>
+        <span>原型示例数据 · 2026.10.24</span>
+        <a href="#">RSS</a>
+        <a href="https://github.com/qwertyuio196875" target="_blank" rel="noopener">GitHub</a>
+      </footer>
+    </div>
+
+    <!-- ================================================================
+         变体 D · 简洁 · 安静阅读型（参考 kunxing-blog.top/home 的气质）
+         ================================================================ -->
+    <div class="vpane" data-vpane="D" data-page="home" hidden>
+      <header class="d-top">
+        <a class="brand" href="#" data-nav="home">qwertyuio196875</a>
+        <nav aria-label="主导航">
+          <a href="#" data-nav="home">首页</a>
+          <a href="#" data-nav="essays">随笔</a>
+          <a href="#" data-nav="moments">说说</a>
+          <a href="#" data-nav="projects">项目</a>
+          <a href="#" data-nav="links">友链</a>
+          <a href="#" data-nav="about">关于</a>
+        </nav>
+        <div class="util">
+          <button class="ef-btn small" type="button" data-theme-toggle>切换深浅</button>
+        </div>
+      </header>
+
+      <!-- D 首页：单栏安静的阅读页 -->
+      <section class="pg" data-pg="home">
+        <article class="d-home">
+          <p class="ef-eyebrow slash">Home</p>
+          <h1 class="name">qwertyuio196875</h1>
+          <ul class="ef-facts ef-field">
+            <li><time>2026.10.24</time></li>
+            <li>随笔 6 篇</li>
+            <li>说说 5 条</li>
+            <li>项目 3 个</li>
+          </ul>
+
+          <div class="d-sec">
+            <h2 class="ef-group-head ef-read"><span>前言</span></h2>
+            <p class="ef-read">学的时候热血沸腾，过两天记忆清空——所以把零散的思考和实践写在这里，督促自己持续总结，也给未来的自己留一份能翻回去的记录。</p>
+            <p class="ef-read">内容不一定完美，但都是真实踩坑后写下的心得。我认真记录，你随意逛逛。（示例占位，上线前换成自己的话。）</p>
+          </div>
+
+          <div class="d-sec">
+            <h2 class="ef-group-head ef-read"><span>随笔</span><span class="ef-field">6 篇</span></h2>
+            <ol class="ef-records">
+              <li><a class="ef-record" href="#" data-nav="essay"><span class="ef-tag is-current">No.006</span><time class="ef-field">2026.10.21</time><span class="name ef-read">给 Java 开发者的 Python 速通路线</span><span class="ef-field">3,214 字</span></a></li>
+              <li><a class="ef-record" href="#" data-nav="essays"><span class="ef-tag">No.005</span><time class="ef-field">2026.10.09</time><span class="name ef-read">用 Spring AI 自动分类工单</span><span class="ef-field">5,802 字</span></a></li>
+              <li><a class="ef-record" href="#" data-nav="essays"><span class="ef-tag">No.004</span><time class="ef-field">2026.09.18</time><span class="name ef-read">AI-Think-Forge 设计记</span><span class="ef-field">4,377 字</span></a></li>
+              <li><a class="ef-record" href="#" data-nav="essays"><span class="ef-tag">No.003</span><time class="ef-field">2026.08.30</time><span class="name ef-read">Git 教学仓库整理术</span><span class="ef-field">2,045 字</span></a></li>
+              <li><a class="ef-record" href="#" data-nav="essays"><span class="ef-tag">No.002</span><time class="ef-field">2026.08.12</time><span class="name ef-read">智慧养老项目里的 Redis 缓存优化</span><span class="ef-field">6,380 字</span></a></li>
+            </ol>
+            <p class="ef-actions"><a class="ef-btn small" href="#" data-nav="essays">查看全部 6 篇</a></p>
+          </div>
+
+          <div class="d-sec">
+            <h2 class="ef-group-head ef-read"><span>说说</span><span class="ef-field">5 条</span></h2>
+            <div class="mo">
+              <time class="ef-field" datetime="2026-10-23">2026.10.23</time>
+              <p class="ef-read">今晚把博客原型撸出来了，三套方案自己先挑花眼。</p>
+            </div>
+            <div class="mo">
+              <time class="ef-field" datetime="2026-10-20">2026.10.20</time>
+              <p class="ef-read">Spring AI 的 ChatClient 写起来比想象中顺手，就是 token 花得心疼。</p>
+            </div>
+            <div class="mo">
+              <time class="ef-field" datetime="2026-10-15">2026.10.15</time>
+              <p class="ef-read">python-speedrun 的 clone 数破 100 了，写条说说纪念。</p>
+            </div>
+            <p class="ef-actions"><a class="ef-btn small" href="#" data-nav="moments">查看全部 5 条</a></p>
+          </div>
+
+          <div class="d-sec">
+            <h2 class="ef-group-head ef-read"><span>项目</span><span class="ef-field">3 个</span></h2>
+            <div class="d-prj">
+              <p class="t"><a href="#" data-nav="projects">AI-Ticket-Management</a></p>
+              <p class="d ef-read">基于 Spring Boot 3 + Spring AI + Vue 3 构建的 AI 智能工单管理系统。</p>
+              <p class="meta ef-field"><span>Java</span> / <span>1 星</span></p>
+            </div>
+            <div class="d-prj">
+              <p class="t"><a href="#" data-nav="projects">AI-Think-Forge</a></p>
+              <p class="d ef-read">把一句模糊的想法，打磨成一份可交付的成品。</p>
+              <p class="meta ef-field"><span>Python</span> / <span>0 星</span></p>
+            </div>
+            <div class="d-prj" style="border-bottom: 0">
+              <p class="t"><a href="#" data-nav="projects">python-speedrun</a></p>
+              <p class="d ef-read">Python 速通 · 面向 Java 开发者的 5~10 小时过关路线。</p>
+              <p class="meta ef-field"><span>JavaScript</span> / <span>0 星</span></p>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <!-- D 随笔列表 -->
+      <section class="pg d-sheetwrap" data-pg="essays" hidden>
+        <article class="ef-spread">
+          <div class="ef-sheet">
+            <p class="ef-eyebrow slash">Essays</p>
+            <header class="ef-sheet-head"><h1 class="ef-read">随笔</h1><p class="ef-field">共 6 篇</p></header>
+            <div class="listwrap">
+              <p class="chips">
+                <button class="ef-chip" type="button" data-tag="*" aria-pressed="true">全部 <span class="n">6</span></button>
+                <button class="ef-chip" type="button" data-tag="java" aria-pressed="false">Java <span class="n">2</span></button>
+                <button class="ef-chip" type="button" data-tag="ai" aria-pressed="false">AI <span class="n">2</span></button>
+                <button class="ef-chip" type="button" data-tag="python" aria-pressed="false">Python <span class="n">1</span></button>
+                <button class="ef-chip" type="button" data-tag="git" aria-pressed="false">Git <span class="n">1</span></button>
+                <button class="ef-chip" type="button" data-tag="redis" aria-pressed="false">Redis <span class="n">1</span></button>
+                <button class="ef-chip" type="button" data-tag="tools" aria-pressed="false">工具 <span class="n">1</span></button>
+                <button class="ef-chip" type="button" data-tag="note" aria-pressed="false">随笔 <span class="n">1</span></button>
+              </p>
+              <h2 class="ef-group-head ef-read"><span>2026</span><span class="ef-field">6 篇</span></h2>
+              <ol class="ef-records">
+                <li><a class="ef-record" href="#" data-nav="essay" data-tags="python"><span class="ef-tag">No.006</span><time class="ef-field">2026.10.21</time><span class="name ef-read">给 Java 开发者的 Python 速通路线</span><span class="ef-field">3,214 字</span></a></li>
+                <li><a class="ef-record" href="#" data-nav="essay" data-tags="java ai"><span class="ef-tag">No.005</span><time class="ef-field">2026.10.09</time><span class="name ef-read">用 Spring AI 自动分类工单</span><span class="ef-field">5,802 字</span></a></li>
+                <li><a class="ef-record" href="#" data-nav="essay" data-tags="ai tools"><span class="ef-tag">No.004</span><time class="ef-field">2026.09.18</time><span class="name ef-read">AI-Think-Forge 设计记</span><span class="ef-field">4,377 字</span></a></li>
+                <li><a class="ef-record" href="#" data-nav="essay" data-tags="git"><span class="ef-tag">No.003</span><time class="ef-field">2026.08.30</time><span class="name ef-read">Git 教学仓库整理术</span><span class="ef-field">2,045 字</span></a></li>
+                <li><a class="ef-record" href="#" data-nav="essay" data-tags="java redis"><span class="ef-tag">No.002</span><time class="ef-field">2026.08.12</time><span class="name ef-read">智慧养老项目里的 Redis 缓存优化</span><span class="ef-field">6,380 字</span></a></li>
+                <li><a class="ef-record" href="#" data-nav="essay" data-tags="note"><span class="ef-tag">No.001</span><time class="ef-field">2026.07.25</time><span class="name ef-read">为什么又开始写博客</span><span class="ef-field">1,208 字</span></a></li>
+              </ol>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <!-- D 随笔详情 -->
+      <section class="pg d-sheetwrap" data-pg="essay" hidden>
+        <article class="ef-spread">
+          <div class="ef-sheet">
+            <p class="ef-crumb ef-field"><a href="#" data-nav="essays">全部随笔</a><span>Python</span></p>
+            <p style="display: flex; gap: 0.5rem; margin: 0 0 0.75rem">
+              <a class="ef-tag is-current" href="#" data-nav="essay">No.006</a>
+              <a class="ef-kv" href="#" data-nav="essays"><span>标签</span><span>Python</span></a>
+            </p>
+            <ul class="ef-facts ef-field"><li><time>2026.10.21</time></li><li>3,214 字</li><li>约 8 分钟</li></ul>
+            <h1 class="ef-read" style="font-size: clamp(1.8rem, 3.6vw, 2.5rem); font-weight: 700; line-height: 1.25; margin: 1.5rem 0 1rem">给 Java 开发者的 Python 速通路线</h1>
+            <div class="ef-tri" aria-hidden="true"><i></i><i></i><i></i></div>
+            <p class="ef-lede ef-read">示例摘要：从 Java 的肌肉记忆切换到 Python 的直觉。</p>
+            <div class="ef-prose">
+              <p>示例正文（占位）。阅读区只用墨色、次要墨色和纸面，一行约三十八个汉字。</p>
+              <h2>一、先扔掉的想法</h2>
+              <p>示例段落，正式内容上线时替换。行内代码 <code>dataclass Slot:</code>。</p>
+              <blockquote>示例引用：接口小、行为少，在哪门语言里都是好味道。</blockquote>
+            </div>
+            <h2 class="ef-group-head ef-read"><span>相关随笔</span><span class="ef-field">2 篇</span></h2>
+            <ol class="ef-records">
+              <li><a class="ef-record" href="#" data-nav="essays"><span class="ef-tag">No.005</span><time class="ef-field">2026.10.09</time><span class="name ef-read">用 Spring AI 自动分类工单</span><span class="ef-field">5,802 字</span></a></li>
+              <li><a class="ef-record" href="#" data-nav="essays"><span class="ef-tag">No.004</span><time class="ef-field">2026.09.18</time><span class="name ef-read">AI-Think-Forge 设计记</span><span class="ef-field">4,377 字</span></a></li>
+            </ol>
+          </div>
+        </article>
+      </section>
+
+      <!-- D 说说 -->
+      <section class="pg d-sheetwrap" data-pg="moments" hidden>
+        <article class="ef-spread">
+          <div class="ef-sheet">
+            <p class="ef-eyebrow slash">Moments</p>
+            <header class="ef-sheet-head"><h1 class="ef-read">说说</h1><p class="ef-field">共 5 条</p></header>
+            <div class="mo">
+              <time class="ef-field" datetime="2026-10-23">2026.10.23 21:40</time>
+              <div><p class="ef-read">今晚把博客原型撸出来了，三套方案自己先挑花眼。</p></div>
+            </div>
+            <div class="mo">
+              <time class="ef-field" datetime="2026-10-20">2026.10.20 12:12</time>
+              <div><p class="ef-read">Spring AI 的 ChatClient 写起来比想象中顺手，就是 token 花得心疼。</p></div>
+            </div>
+            <div class="mo">
+              <time class="ef-field" datetime="2026-10-15">2026.10.15 23:05</time>
+              <div>
+                <p class="ef-read">python-speedrun 的 clone 数破 100 了，写条说说纪念。</p>
+                <figure class="ef-frame mo-img" style="height: 9.5rem">
+                  <div class="window">
+                    <svg viewBox="0 0 220 130" fill="none" stroke="currentColor" stroke-width="1" aria-label="示例图片占位">
+                      <rect x="1" y="1" width="218" height="128" />
+                      <g opacity=".3"><line x1="20" y1="128" x2="148" y2="0" /><line x1="60" y1="128" x2="188" y2="0" /><line x1="100" y1="128" x2="218" y2="10" /><line x1="140" y1="128" x2="218" y2="50" /></g>
+                      <text x="110" y="70" text-anchor="middle" font-size="12" letter-spacing="3" fill="currentColor" stroke="none" font-family="Saira, sans-serif">示例图片</text>
+                    </svg>
+                  </div>
+                </figure>
+              </div>
+            </div>
+            <div class="mo">
+              <time class="ef-field" datetime="2026-10-08">2026.10.08 09:30</time>
+              <div><p class="ef-read">雨天的周末，适合整理 Git 教学仓库。</p></div>
+            </div>
+            <div class="mo">
+              <time class="ef-field" datetime="2026-09-28">2026.09.28 22:17</time>
+              <div><p class="ef-read">AI-Ticket-Management 跑通了第一条自动分类的端到端流程。</p></div>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <!-- D 项目 -->
+      <section class="pg d-sheetwrap" data-pg="projects" hidden>
+        <article class="ef-spread">
+          <div class="ef-sheet">
+            <p class="ef-eyebrow slash">Projects</p>
+            <header class="ef-sheet-head"><h1 class="ef-read">项目</h1><p class="ef-field">共 3 个</p></header>
+            <p class="ef-lede ef-read">构建时自动从 GitHub 拉取（示例快照 2026.10.24）。</p>
+            <div class="prj">
+              <div>
+                <p class="t">AI-Ticket-Management</p>
+                <p class="d ef-read">基于 Spring Boot 3 + Spring AI + Vue 3 构建的 AI 智能工单管理系统。</p>
+                <p class="meta ef-field"><span class="lang">Java</span><span>1 星</span></p>
+              </div>
+              <p class="ef-actions" style="margin: 0; align-self: center"><a class="ef-btn small" href="https://github.com/qwertyuio196875/AI-Ticket-Management" target="_blank" rel="noopener">在 GitHub 查看</a></p>
+            </div>
+            <div class="prj">
+              <div>
+                <p class="t">AI-Think-Forge</p>
+                <p class="d ef-read">把一句模糊的想法，打磨成一份可交付的成品。</p>
+                <p class="meta ef-field"><span class="lang">Python</span><span>0 星</span></p>
+              </div>
+              <p class="ef-actions" style="margin: 0; align-self: center"><a class="ef-btn small" href="https://github.com/qwertyuio196875/AI-Think-Forge" target="_blank" rel="noopener">在 GitHub 查看</a></p>
+            </div>
+            <div class="prj" style="border-bottom: 0">
+              <div>
+                <p class="t">python-speedrun</p>
+                <p class="d ef-read">Python 速通 · 面向 Java 开发者的 5~10 小时过关路线。</p>
+                <p class="meta ef-field"><span class="lang">JavaScript</span><span>0 星</span></p>
+              </div>
+              <p class="ef-actions" style="margin: 0; align-self: center"><a class="ef-btn small" href="https://github.com/qwertyuio196875/python-speedrun" target="_blank" rel="noopener">在 GitHub 查看</a></p>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <!-- D 友链 -->
+      <section class="pg d-sheetwrap" data-pg="links" hidden>
+        <article class="ef-spread">
+          <div class="ef-sheet">
+            <p class="ef-eyebrow slash">Links</p>
+            <header class="ef-sheet-head"><h1 class="ef-read">友链</h1><p class="ef-field">共 3 条</p></header>
+            <div class="lnk">
+              <p class="n"><a href="https://kunxing-blog.top" target="_blank" rel="noopener">kunxing 的博客</a></p>
+              <p class="d ef-read">本站参考的 Vue 个人博客。</p>
+              <p class="ef-field">kunxing-blog.top</p>
+            </div>
+            <div class="lnk">
+              <p class="n">示例：阿菜的笔记</p>
+              <p class="d ef-read">占位友链，上线前在 friends.json 里替换。</p>
+              <p class="ef-field">example.com</p>
+            </div>
+            <div class="lnk" style="border-bottom: 0">
+              <p class="n">示例：老王的折腾记录</p>
+              <p class="d ef-read">占位友链。</p>
+              <p class="ef-field">example.com</p>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <!-- D 关于 -->
+      <section class="pg d-sheetwrap" data-pg="about" hidden>
+        <article class="ef-spread">
+          <div class="ef-sheet">
+            <p class="ef-eyebrow slash">About</p>
+            <header class="ef-sheet-head"><h1 class="ef-read">关于</h1><p class="ef-field">qwertyuio196875</p></header>
+            <div class="ef-prose">
+              <p>示例占位：Java 后端开发，正在把 AI 工具链接进日常开发。把零散的思考和实践记在这里，督促自己持续总结，也给未来的自己留一份能翻回去的记录。</p>
+            </div>
+            <ul class="ef-ledger">
+              <li><span>技术栈</span><span class="ef-field">Java / Spring Boot / Vue</span></li>
+              <li><span>在学</span><span class="ef-field">Python / Spring AI</span></li>
+              <li><span>随笔 · 说说</span><span class="ef-field">6 篇 / 5 条</span></li>
+            </ul>
+            <p class="ef-actions"><a class="ef-btn go" href="https://github.com/qwertyuio196875" target="_blank" rel="noopener">GitHub 主页</a></p>
+          </div>
+        </article>
+      </section>
+
+      <footer class="site-foot ef-field">
+        <span>QWERTYUIO196875</span>
+        <span>原型示例数据 · 2026.10.24</span>
+        <a href="#">RSS</a>
+        <a href="https://github.com/qwertyuio196875" target="_blank" rel="noopener">GitHub</a>
+      </footer>
+    </div>
+
+    <!-- 原型切换器（评估工具，不属于站点设计） -->
+    <div class="pt-bar" role="group" aria-label="原型变体切换">
+      <button class="pt-prev" type="button" aria-label="上一个变体">←</button>
+      <span class="pt-label"></span>
+      <button class="pt-next" type="button" aria-label="下一个变体">→</button>
+    </div>
+
+    <script type="module" src="./prototype.js"></script>
+  </body>
+</html>

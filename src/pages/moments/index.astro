@@ -1,0 +1,46 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getMoments } from '../../lib/content';
+import { render } from 'astro:content';
+
+const moments = await getMoments();
+const bodies = await Promise.all(moments.map((m) => render(m.entry)));
+---
+
+<Layout title="说说" description="无标题的短动态，随手记下的日常和进展。">
+  <div class="d-sheetwrap">
+    <article class="ef-sheet">
+      <p class="ef-eyebrow slash">Moments</p>
+      <header class="ef-sheet-head">
+        <h1 class="ef-read">说说</h1>
+        <p class="ef-field">共 {moments.length} 条</p>
+      </header>
+
+      {
+        moments.map((m, i) => {
+          const { Content } = bodies[i];
+          return (
+            <div class="mo">
+              <time class="ef-field" datetime={m.date.toISOString().slice(0, 10)}>
+                {m.dateStr}
+              </time>
+              <div class="mo-body ef-read">
+                <Content />
+                {m.image && <img src={m.image} alt="" loading="lazy" />}
+              </div>
+            </div>
+          );
+        })
+      }
+    </article>
+  </div>
+</Layout>
+
+<style>
+  .mo-body :global(p) {
+    margin: 0;
+  }
+  .mo-body :global(p + p) {
+    margin-top: 0.6rem;
+  }
+</style>

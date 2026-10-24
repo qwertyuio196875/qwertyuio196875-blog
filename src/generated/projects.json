@@ -1,0 +1,30 @@
+{
+  "generatedAt": "2026-10-24T13:08:49.508Z",
+  "source": "github-api",
+  "repos": [
+    {
+      "name": "AI-Ticket-Management",
+      "description": "基于 Spring Boot 3 + Spring AI + Vue 3 构建的 AI 智能工单管理系统，集成 DeepSeek 自动分类与智能回复。",
+      "language": "Java",
+      "stars": 1,
+      "url": "https://github.com/qwertyuio196875/AI-Ticket-Management",
+      "updated": "2026-08-25T11:18:36Z"
+    },
+    {
+      "name": "AI-Think-Forge",
+      "description": "把一句模糊的想法，打磨成一份可交付的成品。",
+      "language": "Python",
+      "stars": 0,
+      "url": "https://github.com/qwertyuio196875/AI-Think-Forge",
+      "updated": "2026-10-22T08:19:23Z"
+    },
+    {
+      "name": "python-speedrun",
+      "description": "Python 速通 · 面向 Java 开发者的 5~10 小时过关路线",
+      "language": "JavaScript",
+      "stars": 0,
+      "url": "https://github.com/qwertyuio196875/python-speedrun",
+      "updated": "2026-10-16T08:10:43Z"
+    }
+  ]
+}

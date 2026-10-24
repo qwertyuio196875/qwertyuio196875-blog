@@ -1,0 +1,53 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import projectsData from '../../generated/projects.json';
+
+const repos = projectsData.repos ?? [];
+const pad = (n: number) => String(n).padStart(2, '0');
+const snapshot = new Date(projectsData.generatedAt);
+const snapshotStr = `${snapshot.getFullYear()}.${pad(snapshot.getMonth() + 1)}.${pad(snapshot.getDate())}`;
+---
+
+<Layout title="项目" description="构建时自动从 GitHub 同步的公开仓库。">
+  <div class="d-sheetwrap">
+    <article class="ef-sheet">
+      <p class="ef-eyebrow slash">Projects</p>
+      <header class="ef-sheet-head">
+        <h1 class="ef-read">项目</h1>
+        <p class="ef-field">共 {repos.length} 个</p>
+      </header>
+      <p class="ef-lede ef-read">构建时自动从 GitHub 拉取公开仓库，更新于 {snapshotStr}。</p>
+
+      {
+        repos.map((r) => (
+          <div class="prj">
+            <div>
+              <p class="t">
+                <a href={r.url} target="_blank" rel="noopener">{r.name}</a>
+              </p>
+              {r.description && <p class="d ef-read">{r.description}</p>}
+              <p class="meta ef-field">
+                {r.language && <span class="lang">{r.language}</span>}
+                <span>{r.stars} 星</span>
+              </p>
+            </div>
+            <p class="ef-actions" style="margin: 0; align-self: center">
+              <a class="ef-btn small" href={r.url} target="_blank" rel="noopener">在 GitHub 查看</a>
+            </p>
+          </div>
+        ))
+      }
+    </article>
+  </div>
+</Layout>
+
+<style>
+  .prj .t a {
+    color: inherit;
+  }
+  @media (max-width: 767px) {
+    .prj .ef-actions {
+      justify-self: start;
+    }
+  }
+</style>

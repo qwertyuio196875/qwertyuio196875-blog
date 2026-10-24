@@ -1,0 +1,36 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import friends from '../../data/friends.json';
+
+const items = friends.map((f) => ({ ...f, host: new URL(f.url).hostname }));
+---
+
+<Layout title="友链" description="常看的个人博客和站点。">
+  <div class="d-sheetwrap">
+    <article class="ef-sheet">
+      <p class="ef-eyebrow slash">Links</p>
+      <header class="ef-sheet-head">
+        <h1 class="ef-read">友链</h1>
+        <p class="ef-field">共 {items.length} 条</p>
+      </header>
+
+      {
+        items.map((f) => (
+          <div class="lnk">
+            <p class="n">
+              <a href={f.url} target="_blank" rel="noopener">{f.name}</a>
+            </p>
+            <p class="d ef-read">{f.desc}</p>
+            <p class="ef-field">{f.host}</p>
+          </div>
+        ))
+      }
+    </article>
+  </div>
+</Layout>
+
+<style>
+  .lnk .n a {
+    color: inherit;
+  }
+</style>

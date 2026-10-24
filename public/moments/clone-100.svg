@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180" role="img" aria-label="python-speedrun 的 clone 数突破 100">
+  <g stroke="currentColor" stroke-width="1" fill="none">
+    <path d="M20 155 L72 148 L124 138 L176 120 L228 92 L280 40" />
+    <path d="M20 155 L280 155" />
+  </g>
+  <g stroke="currentColor" stroke-width="1" fill="none" opacity="0.35">
+    <path d="M20 130 L280 130" stroke-dasharray="3 5" />
+    <path d="M20 100 L280 100" stroke-dasharray="3 5" />
+  </g>
+  <g font-family="sans-serif" font-size="11" fill="currentColor" stroke="none">
+    <text x="246" y="36">100+</text>
+    <text x="20" y="172">clone 数</text>
+  </g>
+</svg>

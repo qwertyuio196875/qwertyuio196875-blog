@@ -1,0 +1,210 @@
+/* ============================================================
+   字体：自托管（SIL OFL 1.1，许可证随 node_modules 内的包分发）
+   Saira 可变字体（含宽度轴）+ Noto Sans SC（按 unicode-range 切片）
+   ============================================================ */
+@import '@fontsource-variable/saira/standard.css';
+@import '@fontsource-variable/noto-sans-sc/wght.css';
+
+/* endfield-ui 部件套件（复制自技能 assets/，contours/ 同目录） */
+@import './endfield.css';
+
+/* ============================================================
+   站点布局样式 · 变体 D「安静阅读型」
+   颜色、字体、部件一律用 ef- 类与 --ef-* 变量；这里只写布局。
+   结构参照原型 prototype/（一次性代码，留作一手来源）。
+   ============================================================ */
+
+/* ---------- 顶栏 ---------- */
+.d-top {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 0.8rem var(--ef-pad);
+  border-bottom: 1px solid var(--ef-rule);
+}
+.d-top .brand {
+  font-family: var(--ef-font-ui);
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--ef-ink);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.d-top nav {
+  margin-left: auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.2rem;
+}
+.d-top nav a {
+  padding: 0.25rem 0.6rem;
+  font-size: 0.95rem;
+  text-decoration: none;
+  color: var(--ef-ink);
+}
+.d-top nav a[aria-current='page'] {
+  background: var(--ef-signal);
+  color: var(--ef-on-signal);
+  font-weight: 700;
+}
+.d-top .util {
+  display: flex;
+  align-items: center;
+}
+
+/* ---------- 首页单栏 ---------- */
+.d-home {
+  max-width: 46rem;
+  margin: 0 auto;
+  padding: 3rem var(--ef-pad) 1rem;
+}
+.d-home .site-name {
+  font-family: var(--ef-font-ui);
+  font-weight: 800;
+  font-size: clamp(1.7rem, 4vw, 2.4rem);
+  line-height: 1.2;
+  margin: 0.4rem 0 0.8rem;
+  letter-spacing: 0.01em;
+  overflow-wrap: anywhere;
+}
+.d-sec {
+  margin-top: 3rem;
+}
+
+/* ---------- 首页项目行 ---------- */
+.d-prj {
+  padding: 1.05rem 0;
+  border-bottom: 1px solid var(--ef-rule);
+}
+.d-prj .t {
+  font-weight: 700;
+  margin: 0;
+}
+.d-prj .t a {
+  color: var(--ef-ink);
+}
+.d-prj .d {
+  color: var(--ef-ink-2);
+  margin: 0.25rem 0 0;
+}
+.d-prj .meta {
+  margin-top: 0.4rem;
+}
+
+/* ---------- 阅读页外壳 ---------- */
+.d-sheetwrap {
+  padding: 2.5rem var(--ef-pad) 0;
+}
+
+/* ---------- 随笔详情标题 ---------- */
+.essay-title {
+  font-size: clamp(1.8rem, 3.6vw, 2.5rem);
+  font-weight: 700;
+  line-height: 1.25;
+  margin: 1.5rem 0 1rem;
+}
+
+/* ---------- 随笔列表 ---------- */
+.listwrap {
+  margin-top: 0.5rem;
+}
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 1.25rem 0;
+}
+
+/* ---------- 说说时间线 ---------- */
+.mo {
+  display: grid;
+  grid-template-columns: 10.5rem minmax(0, 1fr);
+  gap: 0.25rem 1.5rem;
+  padding: 1.15rem 0;
+  border-bottom: 1px solid var(--ef-rule);
+}
+.mo time {
+  padding-top: 0.3rem;
+}
+.mo img {
+  margin-top: 0.8rem;
+  max-width: 22rem;
+  color: var(--ef-ink);
+}
+
+/* ---------- 项目行（项目页） ---------- */
+.prj {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.4rem 1.5rem;
+  padding: 1.3rem 0;
+  border-bottom: 1px solid var(--ef-rule);
+}
+.prj .t {
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+.prj .d {
+  color: var(--ef-ink-2);
+  margin-top: 0.15rem;
+}
+.prj .meta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.55rem;
+}
+.prj .meta .lang {
+  padding: 0.05em 0.55em;
+  border: 1px solid var(--ef-rule);
+}
+
+/* ---------- 友链行 ---------- */
+.lnk {
+  display: grid;
+  grid-template-columns: minmax(0, 16rem) minmax(0, 1fr) auto;
+  gap: 0.3rem 1.5rem;
+  align-items: baseline;
+  padding: 1.1rem 0;
+  border-bottom: 1px solid var(--ef-rule);
+}
+.lnk .n {
+  font-weight: 700;
+}
+.lnk .d {
+  color: var(--ef-ink-2);
+}
+
+/* ---------- 页脚 ---------- */
+.site-foot {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.5rem;
+  padding: 1.4rem var(--ef-pad) 5.5rem;
+  border-top: 1px solid var(--ef-rule);
+  color: var(--ef-ink-2);
+}
+.site-foot a {
+  color: var(--ef-ink-2);
+}
+
+/* ---------- 响应式 ---------- */
+@media (max-width: 767px) {
+  .d-top {
+    flex-wrap: wrap;
+  }
+  .d-home {
+    padding-top: 2rem;
+  }
+  .d-sec {
+    margin-top: 2.25rem;
+  }
+  .mo,
+  .prj,
+  .lnk {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .lnk .d {
+    order: 3;
+  }
+}

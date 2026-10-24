@@ -1,0 +1,12 @@
+[
+  {
+    "name": "kunxing 的博客",
+    "url": "https://kunxing-blog.top",
+    "desc": "本站参考的 Vue 个人博客。"
+  },
+  {
+    "name": "示例：阿菜的笔记",
+    "url": "https://example.com",
+    "desc": "占位友链，上线前在 friends.json 里替换。"
+  }
+]

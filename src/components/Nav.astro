@@ -1,0 +1,57 @@
+---
+import { SITE } from '../consts';
+
+const navItems = [
+  { href: '/', label: '首页' },
+  { href: '/essays/', label: '随笔' },
+  { href: '/moments/', label: '说说' },
+  { href: '/projects/', label: '项目' },
+  { href: '/links/', label: '友链' },
+  { href: '/about/', label: '关于' },
+];
+
+const pathname = Astro.url.pathname.replace(/\/+$/, '') || '/';
+const clean = (href: string) => href.replace(/\/+$/, '') || '/';
+const isActive = (href: string) => {
+  const h = clean(href);
+  return h === '/' ? pathname === '/' : pathname === h || pathname.startsWith(h + '/');
+};
+---
+
+<header class="d-top">
+  <a class="brand" href="/">{SITE.name}</a>
+  <nav aria-label="主导航">
+    {
+      navItems.map((item) => (
+        <a href={item.href} aria-current={isActive(item.href) ? 'page' : undefined}>
+          {item.label}
+        </a>
+      ))
+    }
+  </nav>
+  <div class="util">
+    <button class="ef-btn small" type="button" data-theme-toggle aria-pressed="false">
+      切换深浅
+    </button>
+  </div>
+</header>
+
+<script>
+  const btn = document.querySelector<HTMLButtonElement>('[data-theme-toggle]');
+  const root = document.documentElement;
+
+  function apply(theme: string) {
+    root.dataset.theme = theme;
+    btn?.setAttribute('aria-pressed', String(theme === 'dark'));
+  }
+
+  btn?.addEventListener('click', () => {
+    const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
+    try {
+      localStorage.setItem('theme', next);
+    } catch (e) {}
+    apply(next);
+  });
+
+  apply(root.dataset.theme || 'light');
+</script>

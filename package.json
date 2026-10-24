@@ -1,0 +1,20 @@
+{
+  "name": "qwertyuio196875-blog",
+  "type": "module",
+  "version": "0.1.0",
+  "private": true,
+  "description": "qwertyuio196875 的个人静态博客：Astro + Vercel，endfield-ui 风格",
+  "scripts": {
+    "predev": "node scripts/fetch-projects.mjs",
+    "dev": "astro dev",
+    "prebuild": "node scripts/fetch-projects.mjs",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "astro": "^5.0.0",
+    "@astrojs/rss": "^4.0.0",
+    "@fontsource-variable/saira": "^5.2.0",
+    "@fontsource-variable/noto-sans-sc": "^5.2.0"
+  }
+}
