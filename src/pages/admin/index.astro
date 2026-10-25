@@ -1,0 +1,184 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout title="后台" description="站主专用：发说说。" noindex>
+  <div class="d-sheetwrap">
+    <article class="ef-sheet">
+      <p class="ef-eyebrow slash">Admin</p>
+      <header class="ef-sheet-head">
+        <h1 class="ef-read">后台</h1>
+        <p class="ef-field">发说说</p>
+      </header>
+
+      <p id="adm-status" class="ef-field">正在检查登录状态…</p>
+
+      <div id="adm-login" hidden>
+        <p class="ef-read">这个页面只有站主能用。点击下面的按钮，用 GitHub 账号登录后即可发说说。</p>
+        <p class="ef-actions">
+          <a class="ef-btn go" href="/api/admin/auth">用 GitHub 登录</a>
+        </p>
+      </div>
+
+      <form id="adm-form" class="ef-form" hidden>
+        <div class="field">
+          <label for="adm-text">说说内容</label>
+          <textarea id="adm-text" rows="4" maxlength="1000" placeholder="随手写一句…" required></textarea>
+          <small>可以换行，最长 1000 字</small>
+        </div>
+        <div class="field">
+          <label for="adm-img">配图（可选）</label>
+          <input id="adm-img" type="file" accept="image/*" />
+          <small>上传前会自动压缩到约 1600px</small>
+        </div>
+        <p class="ef-actions">
+          <button class="ef-btn go" type="submit">发布</button>
+        </p>
+      </form>
+
+      <div id="adm-result" class="adm-result" hidden></div>
+    </article>
+  </div>
+</Layout>
+
+<script>
+  const $ = <T extends HTMLElement>(sel: string) => document.querySelector<T>(sel)!;
+  const status = $('#adm-status');
+  const loginView = $('#adm-login');
+  const form = $('#adm-form') as HTMLFormElement;
+  const result = $('#adm-result');
+  const textInput = $('#adm-text') as HTMLTextAreaElement;
+  const imgInput = $('#adm-img') as HTMLInputElement;
+  const submitBtn = form.querySelector<HTMLButtonElement>('button[type="submit"]')!;
+
+  async function api(path: string, init?: RequestInit): Promise<Record<string, unknown>> {
+    const res = await fetch(path, init);
+    const data = (await res.json().catch(() => ({}))) as Record<string, unknown>;
+    if (!res.ok) throw new Error(String(data.error ?? `请求失败（${res.status}）`));
+    return data;
+  }
+
+  function showLogin(err?: string) {
+    status.textContent = err ?? '';
+    status.hidden = !err;
+    loginView.hidden = false;
+    form.hidden = true;
+  }
+
+  function showForm() {
+    status.hidden = true;
+    loginView.hidden = true;
+    form.hidden = false;
+  }
+
+  function showResult(ok: boolean, message: string, commitUrl?: string | null) {
+    result.replaceChildren();
+    const p = document.createElement('p');
+    p.className = 'ef-read';
+    p.textContent = message;
+    result.append(p);
+    if (ok && commitUrl && /^https:\/\/github\.com\//.test(commitUrl)) {
+      const link = document.createElement('a');
+      link.className = 'ef-field';
+      link.href = commitUrl;
+      link.target = '_blank';
+      link.rel = 'noopener';
+      link.textContent = '在 GitHub 查看这次提交';
+      result.append(link);
+    }
+    result.hidden = false;
+  }
+
+  // 浏览器端压缩：长边压到 1600px，重编码为 JPEG（透明区填白底）
+  async function compressToJpeg(file: File): Promise<string> {
+    const bitmap = await createImageBitmap(file);
+    const maxEdge = 1600;
+    const scale = Math.min(1, maxEdge / Math.max(bitmap.width, bitmap.height));
+    const w = Math.max(1, Math.round(bitmap.width * scale));
+    const h = Math.max(1, Math.round(bitmap.height * scale));
+    const canvas = document.createElement('canvas');
+    canvas.width = w;
+    canvas.height = h;
+    const ctx = canvas.getContext('2d')!;
+    ctx.fillStyle = '#fff';
+    ctx.fillRect(0, 0, w, h);
+    ctx.drawImage(bitmap, 0, 0, w, h);
+    bitmap.close();
+    const blob = await new Promise<Blob | null>((resolve) => canvas.toBlob(resolve, 'image/jpeg', 0.85));
+    if (!blob) throw new Error('图片压缩失败，请换一张或去掉配图');
+    const bytes = new Uint8Array(await blob.arrayBuffer());
+    let bin = '';
+    for (let i = 0; i < bytes.length; i += 1) bin += String.fromCharCode(bytes[i]);
+    return btoa(bin);
+  }
+
+  // GitHub 跳转回来时 URL 带 ?code=…&state=…：换成会话后清掉参数
+  const params = new URLSearchParams(location.search);
+  if (params.has('code') && params.has('state')) {
+    history.replaceState(null, '', '/admin/');
+    status.textContent = '正在完成登录…';
+    try {
+      await api('/api/admin/token', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ code: params.get('code'), state: params.get('state') }),
+      });
+    } catch (e) {
+      showLogin(`登录失败：${(e as Error).message}`);
+    }
+  }
+
+  try {
+    const session = await api('/api/admin/session');
+    if (session.authed) showForm();
+    else showLogin();
+  } catch (e) {
+    showLogin((e as Error).message);
+  }
+
+  form.addEventListener('submit', async (ev) => {
+    ev.preventDefault();
+    result.hidden = true;
+    const text = textInput.value.trim();
+    if (!text) return;
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = '发布中…';
+    try {
+      const now = new Date();
+      const pad = (n: number) => String(n).padStart(2, '0');
+      const payload: Record<string, unknown> = {
+        text,
+        date: `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`,
+        time: `${pad(now.getHours())}${pad(now.getMinutes())}`,
+      };
+      const file = imgInput.files?.[0];
+      if (file) payload.image = { b64: await compressToJpeg(file) };
+
+      const res = await api('/api/admin/publish', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      showResult(
+        true,
+        '已提交！Cloudflare 正在重新构建，约 1~2 分钟后「说说」页就能看到。',
+        typeof res.commitUrl === 'string' ? res.commitUrl : null,
+      );
+      form.reset();
+    } catch (e) {
+      showResult(false, `发布失败：${(e as Error).message}`);
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = '发布';
+    }
+  });
+</script>
+
+<style>
+  .adm-result {
+    margin-top: 1.25rem;
+    display: grid;
+    gap: 0.5rem;
+  }
+</style>

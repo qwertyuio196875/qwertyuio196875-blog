@@ -18,7 +18,7 @@ const related = all
   .reverse()
   .slice(0, 2);
 
-const excerpt = plainText(essay.entry.body).slice(0, 80);
+const excerpt = plainText(essay.entry.body ?? '').slice(0, 80);
 ---
 
 <Layout title={essay.title} description={excerpt}>

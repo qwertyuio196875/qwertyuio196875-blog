@@ -42,7 +42,7 @@ export async function getEssays(): Promise<EssayView[]> {
   return entries
     .sort((a, b) => a.data.date.getTime() - b.data.date.getTime())
     .map((entry, i) => {
-      const words = entry.body.replace(/\s/g, '').length;
+      const words = (entry.body ?? '').replace(/\s/g, '').length;
       return {
         entry,
         id: entry.id,
@@ -57,11 +57,11 @@ export async function getEssays(): Promise<EssayView[]> {
     });
 }
 
-/** 说说按时间倒序（最新的在前） */
+/** 说说按时间倒序（最新的在前）；同一天的多条再按文件名倒序（文件名含 HHMM，新的在前） */
 export async function getMoments(): Promise<MomentView[]> {
   const entries = await getCollection('moments');
   return entries
-    .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+    .sort((a, b) => b.data.date.getTime() - a.data.date.getTime() || b.id.localeCompare(a.id))
     .map((entry) => ({
       entry,
       id: entry.id,

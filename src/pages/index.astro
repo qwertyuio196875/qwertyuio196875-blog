@@ -57,7 +57,7 @@ const today = formatDate(new Date());
           <div class="mo">
             <time class="ef-field" datetime={m.date.toISOString().slice(0, 10)}>{m.dateStr}</time>
             <div>
-              <p class="ef-read">{plainText(m.entry.body)}</p>
+              <p class="ef-read">{plainText(m.entry.body ?? '')}</p>
               {m.image && <img src={m.image} alt="" loading="lazy" />}
             </div>
           </div>
