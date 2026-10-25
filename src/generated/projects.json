@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-24T13:08:49.508Z",
+  "generatedAt": "2026-10-25T08:32:30.645Z",
   "source": "github-api",
   "repos": [
     {
@@ -9,6 +9,14 @@
       "stars": 1,
       "url": "https://github.com/qwertyuio196875/AI-Ticket-Management",
       "updated": "2026-08-25T11:18:36Z"
+    },
+    {
+      "name": "qwertyuio196875-blog",
+      "description": "基于 Astro 的纯静态个人博客（endfield-ui 风格），部署在 Vercel",
+      "language": "CSS",
+      "stars": 0,
+      "url": "https://github.com/qwertyuio196875/qwertyuio196875-blog",
+      "updated": "2026-10-24T13:38:40Z"
     },
     {
       "name": "AI-Think-Forge",

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 600">
+  <rect width="480" height="600" fill="#e6e6e6"/>
+  <g fill="none" stroke="#a9a9a9" stroke-width="1.5">
+    <path d="M-20 430 C 100 388, 300 476, 500 424"/>
+    <path d="M-20 468 C 110 428, 290 510, 500 462"/>
+    <path d="M-20 506 C 120 468, 280 544, 500 500"/>
+    <path d="M-20 544 C 130 508, 270 578, 500 538"/>
+  </g>
+  <text x="240" y="250" text-anchor="middle" font-family="sans-serif" font-size="26" letter-spacing="6" fill="#9a9a9a">照片占位</text>
+  <text x="240" y="286" text-anchor="middle" font-family="sans-serif" font-size="15" fill="#adadad">public/home-photo.svg</text>
+</svg>

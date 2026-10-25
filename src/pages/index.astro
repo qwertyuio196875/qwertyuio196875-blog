@@ -15,18 +15,18 @@ const today = formatDate(new Date());
 
 <Layout>
   <article class="d-home">
-    <p class="ef-eyebrow slash">Home</p>
-    <h1 class="site-name">{SITE.name}</h1>
-    <ul class="ef-facts ef-field">
-      <li><time>{today}</time></li>
-      <li>随笔 {essays.length} 篇</li>
-      <li>说说 {moments.length} 条</li>
-      <li>项目 {repos.length} 个</li>
-    </ul>
-
-    <section class="d-sec">
-      <h2 class="ef-group-head ef-read"><span>前言</span></h2>
-      {HOME_INTRO.map((p) => <p class="ef-read">{p}</p>)}
+    <section class="d-intro">
+      <img class="photo" src={SITE.photo} alt="站主照片" />
+      <div class="who">
+        <h1 class="site-name">{SITE.name}</h1>
+        <ul class="ef-facts ef-field">
+          <li><time>{today}</time></li>
+          <li>随笔 {essays.length} 篇</li>
+          <li>说说 {moments.length} 条</li>
+          <li>项目 {repos.length} 个</li>
+        </ul>
+        {HOME_INTRO.map((p) => <p class="ef-read">{p}</p>)}
+      </div>
     </section>
 
     <section class="d-sec">
