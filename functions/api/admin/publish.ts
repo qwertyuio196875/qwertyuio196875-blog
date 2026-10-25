@@ -54,7 +54,14 @@ export async function onRequestPost({ request, env }: Ctx): Promise<Response> {
   }
 
   const md = momentMarkdown(body, imagePath);
-  const put = await putFile(session.token, mdPath, `moments: 发布说说 ${stamp}`, utf8ToB64(md));
+  const mdMessage = `moments: 发布说说 ${stamp}`;
+  let mdPathFinal = mdPath;
+  let put = await putFile(session.token, mdPathFinal, mdMessage, utf8ToB64(md));
+  if (put.status >= 300) {
+    // 同一分钟的第二条说说会撞文件名，加随机后缀重试一次
+    mdPathFinal = `src/content/moments/${stamp}-${Math.random().toString(36).slice(2, 4)}.md`;
+    put = await putFile(session.token, mdPathFinal, mdMessage, utf8ToB64(md));
+  }
   if (put.status >= 300)
     return json(
       { error: `说说提交失败（GitHub ${put.status}）：${String(put.body?.message ?? '')}` },
@@ -64,7 +71,7 @@ export async function onRequestPost({ request, env }: Ctx): Promise<Response> {
   const commit = put.body?.commit as { html_url?: string } | undefined;
   return json({
     ok: true,
-    path: mdPath,
+    path: mdPathFinal,
     imagePath,
     commitUrl: typeof commit?.html_url === 'string' ? commit.html_url : null,
   });

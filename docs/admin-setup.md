@@ -1,7 +1,7 @@
 # 后台（/admin/）配置指引
 
 后台已实现：`/admin/` 页面 + `functions/api/admin/*` 接口（GitHub OAuth 登录、发说说、配图压缩入库）。
-代码就绪后还差**两处一次性控制台配置**，都只能由站主本人操作。
+代码就绪后还差**两处一次性网页设置**（GitHub 与 Cloudflare 的设置页），都只能由站主本人操作。
 
 ## 1. 注册 GitHub OAuth 应用（约 3 分钟）
 

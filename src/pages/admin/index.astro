@@ -89,7 +89,8 @@ import Layout from '../../layouts/Layout.astro';
     result.hidden = false;
   }
 
-  // 浏览器端压缩：长边压到 1600px，重编码为 JPEG（透明区填白底）
+  // 浏览器端压缩：长边压到 1600px，重编码为 JPEG（透明区填白底）；
+  // 逐级降质量直到体积落进「几百 KB」目标，防止 git 仓库膨胀
   async function compressToJpeg(file: File): Promise<string> {
     const bitmap = await createImageBitmap(file);
     const maxEdge = 1600;
@@ -104,7 +105,14 @@ import Layout from '../../layouts/Layout.astro';
     ctx.fillRect(0, 0, w, h);
     ctx.drawImage(bitmap, 0, 0, w, h);
     bitmap.close();
-    const blob = await new Promise<Blob | null>((resolve) => canvas.toBlob(resolve, 'image/jpeg', 0.85));
+
+    const encode = (quality: number) =>
+      new Promise<Blob | null>((resolve) => canvas.toBlob(resolve, 'image/jpeg', quality));
+    let blob = await encode(0.85);
+    for (const quality of [0.7, 0.55]) {
+      if ((blob?.size ?? Infinity) <= 700 * 1024) break;
+      blob = await encode(quality);
+    }
     if (!blob) throw new Error('图片压缩失败，请换一张或去掉配图');
     const bytes = new Uint8Array(await blob.arrayBuffer());
     let bin = '';
